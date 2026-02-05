@@ -39,7 +39,8 @@ export default buildConfig({
   db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
   plugins: [
     r2Storage({
-      bucket: cloudflare.env.R2,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      bucket: cloudflare.env.R2 as any,
       collections: { media: true },
     }),
   ],
