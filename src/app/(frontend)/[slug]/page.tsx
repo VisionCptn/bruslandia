@@ -99,15 +99,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   )
 }
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config })
+export const dynamic = 'force-dynamic'
 
-  const { docs: categories } = await payload.find({
-    collection: 'categories',
-    limit: 100,
-  })
+// Commenting out static generation for now since it doesn't work with D1 during build
+// export async function generateStaticParams() {
+//   const payload = await getPayload({ config })
 
-  return categories.map((category) => ({
-    slug: category.slug,
-  }))
-}
+//   const { docs: categories } = await payload.find({
+//     collection: 'categories',
+//     limit: 100,
+//   })
+
+//   return categories.map((category) => ({
+//     slug: category.slug,
+//   }))
+// }
