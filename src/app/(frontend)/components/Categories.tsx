@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -22,7 +23,7 @@ export const Categories = async () => {
           const image = typeof category.image === 'object' ? category.image : null
 
           return (
-            <a
+            <Link
               key={category.id}
               href={`/${category.slug}`}
               className="no-underline text-inherit"
@@ -33,7 +34,7 @@ export const Categories = async () => {
                   <Image src={image.url} alt={category.title || ''} fill className="object-cover" />
                 )}
               </div>
-            </a>
+            </Link>
           )
         })}
       </div>
