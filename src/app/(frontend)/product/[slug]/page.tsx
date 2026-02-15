@@ -162,15 +162,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
   )
 }
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config })
+export const dynamic = 'force-dynamic'
 
-  const { docs: products } = await payload.find({
-    collection: 'products',
-    limit: 1000,
-  })
+// Commenting out static generation for now since it doesn't work with D1 during build
+// export async function generateStaticParams() {
+//   const payload = await getPayload({ config })
 
-  return products.map((product) => ({
-    slug: product.slug,
-  }))
-}
+//   const { docs: products } = await payload.find({
+//     collection: 'products',
+//     limit: 1000,
+//   })
+
+//   return products.map((product) => ({
+//     slug: product.slug,
+//   }))
+// }
