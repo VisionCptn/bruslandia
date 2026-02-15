@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 interface ProductActionsProps {
   productId: string
@@ -48,7 +49,7 @@ export const ProductActions = ({ productId, title, image, price, sizes }: Produc
                   className={`
                     relative w-24 h-12 flex items-center justify-center ml-3 border-2 transition-all duration-200
                     ${isSelected ? 'border-black' : 'border-gray-300'}
-                    ${isEven ? 'rotate-3' : 'rotate-2'}
+                    ${getRandomRotationClass()}
                   `}
                 >
                   <span
@@ -70,7 +71,7 @@ export const ProductActions = ({ productId, title, image, price, sizes }: Produc
       {/* Add to Cart */}
       <button
         onClick={handleAddToCart}
-        className="mt-4 bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase -rotate-2 transition-transform active:scale-95"
+        className={`mt-4 bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass} transition-transform active:scale-95`}
       >
         додати в корзину
       </button>
