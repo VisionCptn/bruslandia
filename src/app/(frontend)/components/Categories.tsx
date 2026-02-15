@@ -1,0 +1,42 @@
+import Image from 'next/image'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+
+export const Categories = async () => {
+  const payload = await getPayload({ config })
+
+  const { docs: categories } = await payload.find({
+    collection: 'categories',
+    sort: 'order',
+    limit: 100,
+  })
+
+  if (categories.length === 0) {
+    return null
+  }
+
+  return (
+    <section className="px-6 flex-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {categories.map((category) => {
+          const image = typeof category.image === 'object' ? category.image : null
+
+          return (
+            <a
+              key={category.id}
+              href={`/${category.slug}`}
+              className="no-underline text-inherit"
+            >
+              <p className="mb-2 font-medium text-black">{category.title}</p>
+              <div className="relative aspect-square overflow-hidden">
+                {image?.url && (
+                  <Image src={image.url} alt={category.title || ''} fill className="object-cover" />
+                )}
+              </div>
+            </a>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
