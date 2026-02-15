@@ -1,15 +1,17 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { NextResponse } from 'next/server'
+import type { Order } from '@/payload-types'
 
 export async function POST(request: Request) {
   try {
     const payload = await getPayload({ config })
-    const data = await request.json()
+    const body = await request.json()
 
     const order = await payload.create({
       collection: 'orders',
-      data,
+      data: body as Omit<Order, 'id' | 'updatedAt' | 'createdAt'>,
+      draft: false,
     })
 
     return NextResponse.json(order, { status: 201 })

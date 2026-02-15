@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { CatIcon, MartaIcon } from './icons'
 import { FooterTagline } from './FooterTagline'
 
@@ -14,21 +15,21 @@ export const Footer = ({ showTagline = false }: FooterProps) => {
         <MartaIcon width={120} height={75} className="text-black" />
 
         <div className="text-sm">
-          <a href="/search" className="block text-inherit no-underline hover:underline">
+          <Link href="/search" className="block text-inherit no-underline hover:underline">
             search
-          </a>
-          <a href="/privacy" className="block text-inherit no-underline hover:underline">
+          </Link>
+          <Link href="/privacy" className="block text-inherit no-underline hover:underline">
             privacy policy
-          </a>
-          <a href="/shipping" className="block text-inherit no-underline hover:underline">
+          </Link>
+          <Link href="/shipping" className="block text-inherit no-underline hover:underline">
             shipping and returns
-          </a>
-          <a href="/terms" className="block text-inherit no-underline hover:underline">
+          </Link>
+          <Link href="/terms" className="block text-inherit no-underline hover:underline">
             terms or service
-          </a>
-          <a href="/contact" className="block text-inherit no-underline hover:underline">
+          </Link>
+          <Link href="/contact" className="block text-inherit no-underline hover:underline">
             contact
-          </a>
+          </Link>
         </div>
 
         <a
