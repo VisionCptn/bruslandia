@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 interface AddToCartButtonProps {
   productId: string
@@ -60,7 +61,7 @@ export const AddToCartButton = ({
       )}
       <button
         onClick={handleAddToCart}
-        className="bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase -rotate-2 transition-transform active:scale-95"
+        className={`bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass()} transition-transform active:scale-95`}
       >
         додати в корзину
       </button>

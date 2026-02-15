@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useCart } from '../context/CartContext'
 import { formatPrice } from '../utils/formatPrice'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 export const CheckoutForm = () => {
   const { items, total } = useCart()
@@ -245,7 +246,7 @@ export const CheckoutForm = () => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-[#1a1a1a] text-white py-4 px-6 text-lg lowercase hover:bg-black transition-colors rotate-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+        className={`w-full bg-[#1a1a1a] text-white py-4 px-6 text-lg lowercase hover:bg-black transition-colors ${getRandomRotationClass()} active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
       >
         {isSubmitting ? 'обробка...' : 'підтвердити замовлення'}
       </button>

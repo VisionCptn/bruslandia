@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 interface SizeSelectorProps {
   sizes: string[]
@@ -26,7 +27,7 @@ export const SizeSelector = ({ sizes }: SizeSelectorProps) => {
                 /* Only border color changes on selection */
                 ${isSelected ? 'border-black' : 'border-gray-300'}
                 /* Alternating button rotation based on index */
-                ${isEven ? 'rotate-3' : 'rotate-2'}
+                ${getRandomRotationClass()}
               `}
             >
               <span

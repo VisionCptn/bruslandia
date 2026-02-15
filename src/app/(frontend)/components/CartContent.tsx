@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { TrashIcon } from './icons'
 import { formatPrice } from '../utils/formatPrice'
 import { useCart } from '../context/CartContext'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 interface CartContentProps {
   showCheckoutButton?: boolean
@@ -81,7 +82,7 @@ export const CartContent = ({ showCheckoutButton = true, onCheckout }: CartConte
           {showCheckoutButton && (
             <button
               onClick={handleCheckout}
-              className="w-full bg-[#1a1a1a] text-white py-4 px-6 text-lg lowercase hover:bg-black transition-colors rotate-2 active:scale-95"
+              className={`w-full bg-[#1a1a1a] text-white py-4 px-6 text-lg lowercase hover:bg-black transition-colors ${getRandomRotationClass()} active:scale-95`}
             >
               оформити замовлення
             </button>

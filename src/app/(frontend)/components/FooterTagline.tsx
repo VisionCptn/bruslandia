@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { EyesIcon } from './icons'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 export const FooterTagline = async () => {
   const payload = await getPayload({ config })
@@ -22,13 +23,10 @@ export const FooterTagline = async () => {
             return (
               <div key={i} className="flex flex-wrap items-center justify-center gap-x-4">
                 {pairs.map((pair, pairIdx) => {
-                  // Alternate rotation: even pairs tilt right, odd pairs tilt left
-                  const rotationClass = pairIdx % 2 === 0 ? 'rotate-2' : '-rotate-1'
-
                   return (
                     <span
                       key={pairIdx}
-                      className={`inline-block transition-transform duration-500 hover:rotate-0 ${rotationClass}`}
+                      className={`inline-block duration-500 ${getRandomRotationClass()}`}
                     >
                       {/* Logic to handle the blue 'М' within the pair */}
                       {pair.split(' ').map((word, wIdx) => (
