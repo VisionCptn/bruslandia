@@ -19,6 +19,13 @@ type Props = {
     instagram: MenuItem;
 };
 
+/**
+ * A string to be converted into a slug. 
+ * It will be lowercased, trimmed, spaces will be replaced with hyphens, 
+ * and non-alphanumeric characters (except hyphens) will be removed.
+ * @param s  
+ * @returns 
+ */
 function slug(s: string) {
     return s
         .toLowerCase()

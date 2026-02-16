@@ -39,6 +39,7 @@ export const MenuSheet = () => {
 
             <div className="flex-1 p-8 lg:px-[80px] lg:pb-[50px] overflow-hidden">
                 <MainMenuContent
+                //techDept: hardcoded for now, will be dynamic later
                     heading = "все шо є"
                     sections={[
                         {
