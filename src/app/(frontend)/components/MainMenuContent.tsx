@@ -1,85 +1,176 @@
 import { useId } from "react";
 import { getRandomRotationClass } from "../utils/randomPosition";
 
-type MenuItem = {
-    label: string;
-    href: string;
-    isCurrent?: boolean;
+type NavbarLink =
+  | {
+      type: "page";
+      page: null | {
+        slug?: string | null;
+        url?: string | null;
+      };
+      url: string | null;
+      newTab: boolean;
+    }
+  | {
+      type: "custom";
+      page: null;
+      url: string | null;
+      newTab: boolean;
+    };
+
+type NavbarChildItem = {
+  id: string;
+  label: string;
+  link: NavbarLink;
 };
 
-type MenuSection = {
-    title: string;
-    items: MenuItem[];
+type NavbarMenuItem = {
+  id: string;
+  label: string;
+  link: NavbarLink;
+  children?: NavbarChildItem[];
+};
+
+export type NavbarData = {
+  id: number;
+  heading?: string | null;
+  menuItems: NavbarMenuItem[];
+  updatedAt?: string;
+  createdAt?: string;
+  globalType?: string;
 };
 
 type Props = {
-    heading?: string;
-    sections: MenuSection[];
-    aboutLink: MenuItem;
-    instagram: MenuItem;
+  data: NavbarData;
+  currentPathname?: string;
 };
 
 /**
  * A string to be converted into a slug. 
  * It will be lowercased, trimmed, spaces will be replaced with hyphens, 
  * and non-alphanumeric characters (except hyphens) will be removed.
- * @param s  
- * @returns 
  */
 function slug(s: string) {
-    return s
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\p{L}\p{N}-]+/gu, "");
+  return s
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\p{L}\p{N}-]+/gu, "");
 }
 
-export const MainMenuContent = ({
-    heading,
-    sections,
-    aboutLink,
-    instagram,
-  }: Props) => {
-    const navLabelId = useId();
+function resolveLink(link: NavbarLink): {
+  href: string;
+  target?: "_blank";
+  rel?: string;
+} | null {
+  const url = link.url?.trim() || null;
 
-    return (
-        <nav aria-labelledby={navLabelId} className="flex flex-col font-medium h-full">
-            <h2 className={`block font-bold text-base pb-2 ${getRandomRotationClass()}`} id={navLabelId}>{heading}</h2>
-            <div className={`pl-2`}>
-                {sections.map((section) => {
-                    const sectionId = `${navLabelId}-${slug(section.title)}`;
+  const pageUrl =
+    link.type === "page"
+      ? (link.page?.url?.trim() ||
+          (link.page?.slug ? `/${link.page.slug}` : null))
+      : null;
 
-                    return (
-                        <section className={`mb-6`} key={section.title} aria-labelledby={sectionId}>
-                            <h3 className={`font-bold text-base pb-1 ${getRandomRotationClass()}`} id={sectionId}>{section.title}</h3>
-                            <ul className="pl-5">
-                                {section.items.map((item) => (
-                                    <li key={item.href}>
-                                        <a className={`hover:font-bold block max-w-max ${getRandomRotationClass()}`} href={item.href} aria-current={item.isCurrent ? "page" : undefined}>
-                                            {item.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </section>
-                    );
+  const href = pageUrl || url;
+  if (!href) return null;
+
+  if (link.newTab) {
+    return { href, target: "_blank", rel: "noreferrer noopener" };
+  }
+
+  return { href };
+}
+
+function isCurrent(href: string, currentPathname?: string) {
+  if (!currentPathname) return false;
+
+  const norm = (s: string) => (s.length > 1 ? s.replace(/\/+$/, "") : s);
+  return norm(href) === norm(currentPathname);
+}
+
+export const MainMenuContent = ({ data, currentPathname }: Props) => {
+  const navLabelId = useId();
+  const heading = data.heading ?? undefined;
+
+  return (
+    <nav aria-labelledby={navLabelId} className="flex h-full flex-col font-medium">
+      {heading ? (
+        <h2
+          id={navLabelId}
+          className={`block pb-2 text-base font-bold ${getRandomRotationClass()}`}
+        >
+          {heading}
+        </h2>
+      ) : (
+        <span id={navLabelId} className="sr-only">
+          Menu
+        </span>
+      )}
+
+      <div className="pl-2">
+        {data.menuItems.map((section) => {
+          const sectionId = `${navLabelId}-${slug(section.label)}`;
+          const hasChildren = Boolean(section.children?.length);
+
+          if (!hasChildren) {
+            const link = resolveLink(section.link);
+            const href = link?.href;
+
+            return (
+              <div key={section.id} className="mb-4">
+                {href ? (
+                  <a
+                    className={`block max-w-max hover:font-bold ${getRandomRotationClass()}`}
+                    href={href}
+                    target={link?.target}
+                    rel={link?.rel}
+                    aria-current={isCurrent(href, currentPathname) ? "page" : undefined}
+                  >
+                    {section.label}
+                  </a>
+                ) : (
+                  <span className={`block ${getRandomRotationClass()}`}>{section.label}</span>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <section key={section.id} className="mb-6" aria-labelledby={sectionId}>
+              <h3
+                id={sectionId}
+                className={`pb-1 text-base font-bold ${getRandomRotationClass()}`}
+              >
+                <a className={`cursor-pointer block max-w-max hover:font-bold ${getRandomRotationClass()}`} href={section.link.url}>{section.label}</a>
+              </h3>
+
+              <ul className="pl-5">
+                {section.children!.map((item) => {
+                  const link = resolveLink(item.link);
+                  const href = link?.href;
+
+                  return (
+                    <li key={item.id}>
+                      <a
+                          className={`cursor-pointer block max-w-max hover:font-bold ${getRandomRotationClass()}`}
+                          href={href}
+                          target={link?.target}
+                          rel={link?.rel}
+                          aria-current={isCurrent(href, currentPathname) ? "page" : undefined}
+                        >
+                          {item.label}
+                        </a>
+                    </li>
+                  );
                 })}
-            </div>
-
-            <div className="mt-8">
-                <a className="font-bold " href={aboutLink.href} aria-current={aboutLink.isCurrent ? "page" : undefined}>
-                    {aboutLink.label}
-                </a>
-            </div>
-
-            <div className="mt-auto">
-                <a className="font-medium hover:font-bold" href={instagram.href}>
-                    {instagram.label}
-                </a>
-            </div>
-        </nav>
-    )
-}
+              </ul>
+            </section>
+          );
+        })}
+      </div>
+    </nav>
+  );
+};
 
 //               _._     _,-'""`-._            /
 //               (,-.`._,'(       |\`-/|       \
