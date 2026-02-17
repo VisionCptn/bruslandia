@@ -1,12 +1,15 @@
 import Link from 'next/link'
 import { BrysLogo, EyesIcon, KebabMenu, SearchIcon } from './icons'
 import { CartSheet } from './CartSheet'
+import { getTranslations } from '../utils/getTranslations'
 
 interface HeaderProps {
   isHomepage?: boolean
 }
 
-export const Header = ({ isHomepage = false }: HeaderProps) => {
+export const Header = async ({ isHomepage = false }: HeaderProps) => {
+  const t = await getTranslations()
+
   return (
     <header className="flex justify-between items-start p-6">
       <Link href="/">
@@ -21,7 +24,7 @@ export const Header = ({ isHomepage = false }: HeaderProps) => {
         <button className="bg-transparent border-none cursor-pointer p-0">
           <SearchIcon width={48} height={44} className="text-black" />
         </button>
-        <CartSheet />
+        <CartSheet t={t} />
         <button className="bg-transparent border-none cursor-pointer p-0">
           <KebabMenu width={48} height={44} className="text-black" />
         </button>

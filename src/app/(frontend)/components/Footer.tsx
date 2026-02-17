@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import { CatIcon, MartaIcon } from './icons'
-import { FooterTagline } from './FooterTagline'
 
 interface FooterProps {
   showTagline?: boolean
+  taglineContent?: React.ReactNode
 }
 
-export const Footer = ({ showTagline = false }: FooterProps) => {
+export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => {
   return (
     <footer className="py-10 px-6">
-      {showTagline && <FooterTagline />}
+      {showTagline && taglineContent}
 
       <div className="flex flex-col md:flex-row justify-between items-start flex-wrap gap-6">
         <MartaIcon width={120} height={75} className="text-black" />

@@ -7,6 +7,7 @@ import { Breadcrumbs, Header, Footer, ProductActions, ProductImageCarousel } fro
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { formatPrice } from '../../utils/formatPrice'
 import { generateGroupedOffsetsX } from '../../utils/randomPosition'
+import { getTranslations } from '../../utils/getTranslations'
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
@@ -30,7 +31,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const category = typeof product.category === 'object' ? product.category : null
 
-  const settings = await payload.findGlobal({ slug: 'settings' })
+  const [settings, t] = await Promise.all([
+    payload.findGlobal({ slug: 'settings' }),
+    getTranslations(),
+  ])
 
   // Get related products from same category
   const { docs: relatedProducts } = await payload.find({
@@ -93,6 +97,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               image={images[0]?.image && typeof images[0].image === 'object' ? images[0].image.url || '' : ''}
               price={product.pricing?.uah || 0}
               sizes={product.sizes}
+              t={t}
             />
 
             {/* Description */}

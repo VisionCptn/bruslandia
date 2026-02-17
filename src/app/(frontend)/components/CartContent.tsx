@@ -6,13 +6,15 @@ import { TrashIcon } from './icons'
 import { formatPrice } from '../utils/formatPrice'
 import { useCart } from '../context/CartContext'
 import { getRandomRotationClass } from '../utils/randomPosition'
+import type { UIStrings } from '../utils/getTranslations'
 
 interface CartContentProps {
   showCheckoutButton?: boolean
   onCheckout?: () => void
+  t: Pick<UIStrings, 'cartEmpty' | 'cartTotal' | 'checkout' | 'sizeLabel'>
 }
 
-export const CartContent = ({ showCheckoutButton = true, onCheckout }: CartContentProps) => {
+export const CartContent = ({ showCheckoutButton = true, onCheckout, t }: CartContentProps) => {
   const { items, updateQuantity, removeItem, total } = useCart()
   const router = useRouter()
 
@@ -20,14 +22,15 @@ export const CartContent = ({ showCheckoutButton = true, onCheckout }: CartConte
     if (onCheckout) {
       onCheckout()
     }
-    router.push('/checkout')
+    // techDept - probably need to move all hardcoded routes to admin panel.
+    router.push('/cart')
   }
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-auto">
         {items.length === 0 ? (
-          <p className="text-center text-gray-500 py-8">Корзина порожня</p>
+          <p className="text-center text-gray-500 py-8">{t.cartEmpty}</p>
         ) : (
           <div className="space-y-6">
             {items.map((item) => (
@@ -61,7 +64,7 @@ export const CartContent = ({ showCheckoutButton = true, onCheckout }: CartConte
                     </div>
                     {item.size && (
                       <div className="text-sm text-gray-600 lowercase">
-                        розмір {item.size.toUpperCase()}
+                        {t.sizeLabel} {item.size.toUpperCase()}
                       </div>
                     )}
                     <div className="text-sm">{formatPrice(item.price)}</div>
@@ -76,7 +79,7 @@ export const CartContent = ({ showCheckoutButton = true, onCheckout }: CartConte
       <div className="pt-4 border-t mt-6">
         <div className="w-full space-y-4">
           <div className="flex justify-between items-center">
-            <span className="lowercase">разом</span>
+            <span className="lowercase">{t.cartTotal}</span>
             <span>{formatPrice(total)}</span>
           </div>
           {showCheckoutButton && (
@@ -84,7 +87,7 @@ export const CartContent = ({ showCheckoutButton = true, onCheckout }: CartConte
               onClick={handleCheckout}
               className={`w-full bg-[#1a1a1a] text-white py-4 px-6 text-lg lowercase hover:bg-black transition-colors ${getRandomRotationClass()} active:scale-95`}
             >
-              оформити замовлення
+              {t.checkout}
             </button>
           )}
         </div>

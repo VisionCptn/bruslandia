@@ -3,8 +3,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Header, Footer } from '../components'
+import { Header, Footer, Breadcrumbs } from '../components'
 import { formatPrice } from '../utils/formatPrice'
+import { getTranslations } from '../utils/getTranslations'
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>
@@ -26,27 +27,34 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
-  const { docs: products } = await payload.find({
-    collection: 'products',
-    where: { category: { equals: category.id } },
-    limit: 100,
-  })
+  const [{ docs: products }, settings, t] = await Promise.all([
+    payload.find({
+      collection: 'products',
+      where: { category: { equals: category.id } },
+      limit: 100,
+    }),
+    payload.findGlobal({ slug: 'settings' }),
+    getTranslations(),
+  ])
+
+  const allProductsLabel = (settings.breadcrumbs as string) || 'всі товари'
 
   return (
     <main className="min-h-screen flex flex-col mx-auto max-w-[1600px]">
       <Header />
 
       <section className="px-6 flex-1">
-        <div className="mb-6">
-          <Link href="/" className="text-sm text-gray-600 hover:underline">
-            &larr; back
-          </Link>
-        </div>
+        <Breadcrumbs
+          items={[
+            { label: allProductsLabel, href: '/' },
+            { label: category.title ?? '' },
+          ]}
+        />
 
         <h1 className="text-2xl font-medium mb-8">{category.title}</h1>
 
         {products.length === 0 ? (
-          <p className="text-gray-500">No products in this category yet.</p>
+          <p className="text-gray-500">{t.categoryEmpty}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => {
@@ -83,7 +91,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       />
                     )}
                   </div>
-                  <span className="text-xl text-black block text-center font-bold">{product.title}</span>
+                  <span className="text-xl text-black block text-center font-bold">
+                    {product.title}
+                  </span>
                   <span className="text-sm text-[#A5A3A4] block text-center">
                     {formatPrice(product.pricing?.uah)}
                   </span>
