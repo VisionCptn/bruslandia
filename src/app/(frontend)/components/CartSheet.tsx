@@ -8,11 +8,19 @@ import {
   SheetTitle,
   SheetClose,
 } from '@/components/ui/sheet'
-import { BasketIcon } from './icons'
+import { BasketIcon, BasketFilledIcon } from './icons'
 import { CartContent } from './CartContent'
+import { useCart } from '../context/CartContext'
+import type { UIStrings } from '../utils/getTranslations'
 
-export const CartSheet = () => {
+interface CartSheetProps {
+  t: Pick<UIStrings, 'cartEmpty' | 'cartTotal' | 'checkout' | 'sizeLabel'>
+}
+
+export const CartSheet = ({ t }: CartSheetProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { items } = useCart()
+  const hasItems = items.length > 0
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -20,7 +28,11 @@ export const CartSheet = () => {
         onClick={() => setIsOpen(true)}
         className="bg-transparent border-none cursor-pointer p-0"
       >
-        <BasketIcon width={48} height={44} className="text-black" />
+        {hasItems ? (
+          <BasketFilledIcon width={48} height={51} className="text-black" />
+        ) : (
+          <BasketIcon width={48} height={44} className="text-black" />
+        )}
       </button>
 
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col" showCloseButton={false}>
@@ -44,7 +56,7 @@ export const CartSheet = () => {
         </SheetHeader>
 
         <div className="flex-1 px-6 py-4 overflow-hidden">
-          <CartContent onCheckout={() => setIsOpen(false)} />
+          <CartContent onCheckout={() => setIsOpen(false)} t={t} />
         </div>
       </SheetContent>
     </Sheet>

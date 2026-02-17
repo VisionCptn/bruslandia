@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { getRandomRotationClass } from '../utils/randomPosition'
+import type { UIStrings } from '../utils/getTranslations'
 
 interface ProductActionsProps {
   productId: string
@@ -10,15 +11,16 @@ interface ProductActionsProps {
   image: string
   price: number
   sizes?: string[]
+  t: Pick<UIStrings, 'selectSize' | 'sizeLabel' | 'addToCart'>
 }
 
-export const ProductActions = ({ productId, title, image, price, sizes }: ProductActionsProps) => {
+export const ProductActions = ({ productId, title, image, price, sizes, t }: ProductActionsProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const { addItem } = useCart()
 
   const handleAddToCart = () => {
     if (sizes && sizes.length > 0 && !selectedSize) {
-      alert('Будь ласка, оберіть розмір')
+      alert(t.selectSize)
       return
     }
 
@@ -36,7 +38,7 @@ export const ProductActions = ({ productId, title, image, price, sizes }: Produc
       {/* Sizes */}
       {sizes && sizes.length > 0 && (
         <div className="mb-6">
-          <p className="font-medium mb-3 lowercase">розмір</p>
+          <p className="font-medium mb-3 lowercase">{t.sizeLabel}</p>
           <div className="flex gap-4 flex-wrap">
             {sizes.map((size, index) => {
               const isSelected = selectedSize === size
@@ -73,7 +75,7 @@ export const ProductActions = ({ productId, title, image, price, sizes }: Produc
         onClick={handleAddToCart}
         className={`mt-4 bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass} transition-transform active:scale-95`}
       >
-        додати в корзину
+        {t.addToCart}
       </button>
     </>
   )
