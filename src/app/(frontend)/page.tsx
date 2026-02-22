@@ -1,4 +1,4 @@
-import { Header, Categories, Footer } from './components'
+import { Header, Categories, Footer, FooterTagline } from './components'
 
 export const dynamic = 'force-dynamic'
 
@@ -7,7 +7,7 @@ export default async function HomePage() {
     <main className="min-h-screen flex flex-col mx-auto max-w-[1600px]">
       <Header isHomepage />
       <Categories />
-      <Footer showTagline />
+      <Footer showTagline taglineContent={<FooterTagline />} />
     </main>
   )
 }

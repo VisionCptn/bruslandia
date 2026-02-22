@@ -1,13 +1,16 @@
 import Link from 'next/link'
 import { BrysLogo, EyesIcon, SearchIcon } from './icons'
 import { CartSheet } from './CartSheet'
+import { getTranslations } from '../utils/getTranslations'
 import { MenuSheet } from './MenuSheet'
 
 interface HeaderProps {
   isHomepage?: boolean
 }
 
-export const Header = ({ isHomepage = false }: HeaderProps) => {
+export const Header = async ({ isHomepage = false }: HeaderProps) => {
+  const t = await getTranslations()
+
   return (
     <header className="flex justify-between items-start p-6">
       <Link href="/">
