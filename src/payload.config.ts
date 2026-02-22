@@ -15,6 +15,7 @@ import { Products } from './collections/Products'
 import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
 import { Settings } from './globals/Settings'
+import { Navbar } from './globals/Navbar'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,7 +45,7 @@ export default buildConfig({
     fallback: true,
   },
   collections: [Users, Media, Categories, Products, Orders, Pages],
-  globals: [Settings],
+  globals: [Settings, Navbar],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'fallback-build-secret-replace-in-production',
   typescript: {

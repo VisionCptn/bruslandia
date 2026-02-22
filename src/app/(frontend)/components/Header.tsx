@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { BrysLogo, EyesIcon, KebabMenu, SearchIcon } from './icons'
+import { BrysLogo, EyesIcon, SearchIcon } from './icons'
 import { CartSheet } from './CartSheet'
 import { getTranslations } from '../utils/getTranslations'
+import { MenuSheet } from './MenuSheet'
 
 interface HeaderProps {
   isHomepage?: boolean
@@ -24,10 +25,8 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
         <button className="bg-transparent border-none cursor-pointer p-0">
           <SearchIcon width={48} height={44} className="text-black" />
         </button>
-        <CartSheet t={t} />
-        <button className="bg-transparent border-none cursor-pointer p-0">
-          <KebabMenu width={48} height={44} className="text-black" />
-        </button>
+        <CartSheet />
+        <MenuSheet />
       </div>
     </header>
   )
