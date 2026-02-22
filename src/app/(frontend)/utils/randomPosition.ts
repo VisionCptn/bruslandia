@@ -6,7 +6,7 @@ export const getRandomRotationClass = (
     min: number = -8, 
     max: number = 8, 
     duration: number = 300,
-    hover: true,
+    hover: boolean = true,
     translate: boolean = true
 ) => {
   const rotation = Math.random() * (max - min) + min;
