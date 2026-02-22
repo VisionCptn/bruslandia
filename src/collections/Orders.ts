@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { buildOrderConfirmationEmail } from '../email/orderConfirmation'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -180,6 +181,26 @@ export const Orders: CollectionConfig = {
           data.orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`
         }
         return data
+      },
+    ],
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if (operation !== 'create') return
+        try {
+          await req.payload.sendEmail({
+            to: doc.customerEmail,
+            subject: `замовлення ${doc.orderNumber} прийнято`,
+            html: buildOrderConfirmationEmail({
+              orderNumber: doc.orderNumber,
+              customerEmail: doc.customerEmail,
+              items: doc.items ?? [],
+              shippingAddress: doc.shippingAddress ?? {},
+              total: doc.total,
+            }),
+          })
+        } catch (err) {
+          req.payload.logger.error({ err }, 'Failed to send order confirmation email')
+        }
       },
     ],
   },

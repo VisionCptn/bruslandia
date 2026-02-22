@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext'
 import { formatPrice } from '../utils/formatPrice'
 import { getRandomRotationClass } from '../utils/randomPosition'
 import type { UIStrings } from '../utils/getTranslations'
+import { countries } from '../utils/countries'
 
 interface CheckoutFormProps {
   t: UIStrings
@@ -29,8 +30,10 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
     phone: '',
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    const checked = (e.target as HTMLInputElement).checked
+    const type = (e.target as HTMLInputElement).type
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -177,14 +180,19 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
           <div className="space-y-4">
             <div>
               <label className="block text-sm mb-2">{t.country}</label>
-              <input
-                type="text"
+              <select
                 name="country"
                 required
                 value={formData.country}
                 onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-3 focus:outline-none focus:border-black"
-              />
+                className="w-full border border-gray-300 px-4 py-3 focus:outline-none focus:border-black bg-white appearance-none"
+              >
+                {countries.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
