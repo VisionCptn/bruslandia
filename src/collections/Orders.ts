@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-import { buildOrderConfirmationEmail } from '../email/orderConfirmation'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -167,6 +166,42 @@ export const Orders: CollectionConfig = {
       },
     },
     {
+      name: 'paymentStatus',
+      type: 'select',
+      defaultValue: 'pending',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Created', value: 'created' },
+        { label: 'Processing', value: 'processing' },
+        { label: 'Hold', value: 'hold' },
+        { label: 'Success', value: 'success' },
+        { label: 'Failure', value: 'failure' },
+        { label: 'Reversed', value: 'reversed' },
+        { label: 'Expired', value: 'expired' },
+        { label: 'Cancelled', value: 'cancel' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'monoInvoiceId',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Monobank invoice ID',
+      },
+    },
+    {
+      name: 'receipt',
+      type: 'json',
+      admin: {
+        readOnly: true,
+        description: 'Monobank payment receipt',
+      },
+    },
+    {
       name: 'notes',
       type: 'textarea',
       admin: {
@@ -181,26 +216,6 @@ export const Orders: CollectionConfig = {
           data.orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`
         }
         return data
-      },
-    ],
-    afterChange: [
-      async ({ doc, operation, req }) => {
-        if (operation !== 'create') return
-        try {
-          await req.payload.sendEmail({
-            to: doc.customerEmail,
-            subject: `замовлення ${doc.orderNumber} прийнято`,
-            html: buildOrderConfirmationEmail({
-              orderNumber: doc.orderNumber,
-              customerEmail: doc.customerEmail,
-              items: doc.items ?? [],
-              shippingAddress: doc.shippingAddress ?? {},
-              total: doc.total,
-            }),
-          })
-        } catch (err) {
-          req.payload.logger.error({ err }, 'Failed to send order confirmation email')
-        }
       },
     ],
   },

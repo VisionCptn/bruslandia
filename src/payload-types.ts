@@ -283,6 +283,25 @@ export interface Order {
    * Total in UAH
    */
   total: number;
+  paymentStatus?:
+    | ('pending' | 'created' | 'processing' | 'hold' | 'success' | 'failure' | 'reversed' | 'expired' | 'cancel')
+    | null;
+  /**
+   * Monobank invoice ID
+   */
+  monoInvoiceId?: string | null;
+  /**
+   * Monobank payment receipt
+   */
+  receipt?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   /**
    * Internal notes
    */
@@ -518,6 +537,9 @@ export interface OrdersSelect<T extends boolean = true> {
         phone?: T;
       };
   total?: T;
+  paymentStatus?: T;
+  monoInvoiceId?: T;
+  receipt?: T;
   notes?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Added
+- mono payment
+- email provider sendgrid
 - Started moving ui labels to admin settings page.
 - Icons: basket, trash
 - Cart view route and component
@@ -16,6 +18,7 @@
 - Ukrainian language support (lang="uk")
 
 ### Changed
+- fixed header and footer for mobile
 - Updated page.tsx to compose Header, Content, Footer components
 - Updated layout.tsx metadata for brys shop
 - Replaced default styles with shop-specific CSS

@@ -10,14 +10,12 @@ interface SuccessViewProps {
 }
 
 export const SuccessView = ({ t }: SuccessViewProps) => {
-  const { items } = useCart()
+  const { clearCart } = useCart()
 
   useEffect(() => {
-    if (items.length > 0) {
-      localStorage.removeItem('brys-cart')
-      window.location.reload()
-    }
-  }, [items.length])
+    clearCart()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
