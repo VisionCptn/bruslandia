@@ -57,6 +57,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ pageUrl })
   } catch (error) {
     console.error('Error creating mono invoice:', error)
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal error', detail: String(error) }, { status: 500 })
   }
 }
