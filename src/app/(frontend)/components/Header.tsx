@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { BrysLogo, EyesIcon, KebabMenu, SearchIcon } from './icons'
+import { BrysLogo, EyesIcon, SearchIcon } from './icons'
 import { CartSheet } from './CartSheet'
 import { getTranslations } from '../utils/getTranslations'
+import { MenuSheet } from './MenuSheet'
 
 interface HeaderProps {
   isHomepage?: boolean
@@ -17,9 +18,10 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
           {/* Homepage mobile: kebab | cart on top row, logo below */}
           <div className="md:hidden">
             <div className="flex justify-between items-center mb-2">
-              <button className="bg-transparent border-none cursor-pointer p-0">
+              {/* <button className="bg-transparent border-none cursor-pointer p-0">
                 <KebabMenu width={48} height={44} className="text-black" />
-              </button>
+              </button> */}
+              <MenuSheet />
               <CartSheet t={t} />
             </div>
             <Link href="/">
@@ -37,9 +39,10 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
                 <SearchIcon width={48} height={44} className="text-black" />
               </button>
               <CartSheet t={t} />
-              <button className="bg-transparent border-none cursor-pointer p-0">
+              {/* <button className="bg-transparent border-none cursor-pointer p-0">
                 <KebabMenu width={48} height={44} className="text-black" />
-              </button>
+              </button> */}
+              <MenuSheet />
             </div>
           </div>
         </>
@@ -47,9 +50,10 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
         <>
           {/* Mobile non-homepage: kebab | eyes | cart */}
           <div className="flex md:hidden justify-between items-center">
-            <button className="bg-transparent border-none cursor-pointer p-0">
+            {/* <button className="bg-transparent border-none cursor-pointer p-0">
               <KebabMenu width={48} height={44} className="text-black" />
-            </button>
+            </button> */}
+            <MenuSheet />
             <Link href="/">
               <EyesIcon width={80} height={45} className="text-black" />
             </Link>
@@ -67,9 +71,10 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
                 <SearchIcon width={48} height={44} className="text-black" />
               </button>
               <CartSheet t={t} />
-              <button className="bg-transparent border-none cursor-pointer p-0">
+              {/* <button className="bg-transparent border-none cursor-pointer p-0">
                 <KebabMenu width={48} height={44} className="text-black" />
-              </button>
+              </button> */}
+              <MenuSheet />
             </div>
           </div>
         </>

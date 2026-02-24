@@ -97,9 +97,11 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('uk' | 'en') | ('uk' | 'en')[];
   globals: {
     settings: Setting;
+    navbar: Navbar;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
+    navbar: NavbarSelect<false> | NavbarSelect<true>;
   };
   locale: 'uk' | 'en';
   user: User;
@@ -648,6 +650,43 @@ export interface Setting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar".
+ */
+export interface Navbar {
+  id: number;
+  /**
+   * Optional heading displayed above or inside the navbar
+   */
+  heading?: string | null;
+  menuItems?:
+    | {
+        label: string;
+        link: {
+          type: 'page' | 'custom';
+          page?: (number | null) | Page;
+          url?: string | null;
+          newTab?: boolean | null;
+        };
+        children?:
+          | {
+              label: string;
+              link: {
+                type: 'page' | 'custom';
+                page?: (number | null) | Page;
+                url?: string | null;
+                newTab?: boolean | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "settings_select".
  */
 export interface SettingsSelect<T extends boolean = true> {
@@ -688,6 +727,44 @@ export interface SettingsSelect<T extends boolean = true> {
         shippingWarning?: T;
         paymentMethod?: T;
         paymentSecure?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar_select".
+ */
+export interface NavbarSelect<T extends boolean = true> {
+  heading?: T;
+  menuItems?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              page?: T;
+              url?: T;
+              newTab?: T;
+            };
+        children?:
+          | T
+          | {
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    page?: T;
+                    url?: T;
+                    newTab?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

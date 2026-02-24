@@ -78,7 +78,7 @@
     "pnpm": "^9 || ^10"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged && cross-env NODE_OPTIONS=--no-deprecation npx tsc --noEmit"
+    "pre-commit": "npx lint-staged && npx cross-env NODE_OPTIONS=--no-deprecation npx tsc --noEmit"
   },
   "lint-staged": {
     "*.{ts,tsx}": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix --file"
