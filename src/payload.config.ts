@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
@@ -15,12 +16,15 @@ import { Products } from './collections/Products'
 import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
 import { Settings } from './globals/Settings'
+import { Navbar } from './globals/Navbar'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const realpath = (value: string) => (fs.existsSync(value) ? fs.realpathSync(value) : undefined)
 
-const isCLI = process.argv.some((value) => realpath(value)?.endsWith(path.join('payload', 'bin.js')))
+const isCLI = process.argv.some((value) =>
+  realpath(value)?.endsWith(path.join('payload', 'bin.js')),
+)
 const isProduction = process.env.NODE_ENV === 'production'
 
 const cloudflare =
@@ -44,8 +48,13 @@ export default buildConfig({
     fallback: true,
   },
   collections: [Users, Media, Categories, Products, Orders, Pages],
-  globals: [Settings],
+  globals: [Settings, Navbar],
   editor: lexicalEditor(),
+  email: resendAdapter({
+    defaultFromAddress: 'noreply@bryslandia.com',
+    defaultFromName: 'Bryslandia',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   secret: process.env.PAYLOAD_SECRET || 'fallback-build-secret-replace-in-production',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

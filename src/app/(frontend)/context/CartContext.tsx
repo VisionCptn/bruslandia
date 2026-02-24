@@ -19,6 +19,7 @@ interface CartContextType {
   addItem: (item: Omit<CartItem, 'id' | 'quantity'>) => void
   updateQuantity: (id: string, delta: number) => void
   removeItem: (id: string) => void
+  clearCart: () => void
   total: number
 }
 
@@ -51,12 +52,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const addItem = (newItem: Omit<CartItem, 'id' | 'quantity'>) => {
     setItems((prev) => {
       const existingItem = prev.find(
-        (item) => item.productId === newItem.productId && item.size === newItem.size
+        (item) => item.productId === newItem.productId && item.size === newItem.size,
       )
 
       if (existingItem) {
         return prev.map((item) =>
-          item.id === existingItem.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === existingItem.id ? { ...item, quantity: item.quantity + 1 } : item,
         )
       }
 
@@ -67,8 +68,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const updateQuantity = (id: string, delta: number) => {
     setItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-      )
+        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item,
+      ),
     )
   }
 
@@ -76,10 +77,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setItems((prev) => prev.filter((item) => item.id !== id))
   }
 
+  const clearCart = () => {
+    setItems([])
+    localStorage.removeItem(CART_STORAGE_KEY)
+  }
+
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQuantity, removeItem, total }}>
+    <CartContext.Provider value={{ items, addItem, updateQuantity, removeItem, clearCart, total }}>
       {children}
     </CartContext.Provider>
   )

@@ -1,4 +1,5 @@
 export { BasketIcon } from './BasketIcon'
+export { BasketFilledIcon } from './BasketFilledIcon'
 export { BrysLogo } from './BrysLogo'
 export { CatIcon } from './CatIcon'
 export { EyesIcon } from './EyesIcon'

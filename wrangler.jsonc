@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "bruslandia",
+  "name": "bryslandia",
   "compatibility_date": "2025-08-15",
   "compatibility_flags": [
     // Enable Node.js API
@@ -32,7 +32,8 @@
   "r2_buckets": [
     {
       "binding": "R2",
-      "bucket_name": "bryd-db-r2","preview_bucket_name": "bryd-db-r2",
+      "bucket_name": "bryd-db-r2",
+      "preview_bucket_name": "bryd-db-r2",
     },
     // Create a R2 binding with the binding name "NEXT_INC_CACHE_R2_BUCKET"
     // {

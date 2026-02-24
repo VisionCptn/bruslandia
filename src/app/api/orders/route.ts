@@ -6,11 +6,11 @@ import type { Order } from '@/payload-types'
 export async function POST(request: Request) {
   try {
     const payload = await getPayload({ config })
-    const body = await request.json()
+    const body = await request.json() as Omit<Order, 'id' | 'updatedAt' | 'createdAt'>
 
     const order = await payload.create({
       collection: 'orders',
-      data: body as Omit<Order, 'id' | 'updatedAt' | 'createdAt'>,
+      data: body,
       draft: false,
     })
 

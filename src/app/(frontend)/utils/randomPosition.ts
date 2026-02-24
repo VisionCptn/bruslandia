@@ -2,12 +2,35 @@ export const randomOffsetX = (max: number = 70) => {
   return Math.floor(Math.random() * max)
 }
 
-export const getRandomRotationClass = (min: number = -4, max: number = 4, duration: number = 500) => {
-  const position = Math.random() * (max - min) + min;
-  const classBase = `transition-transform duration-${duration} hover:rotate-0`;
-  const rotationClass = position > 0 ? `rotate-${Math.ceil(position)}` : `-rotate-${Math.ceil(-position)}`;
+export const getRandomRotationClass = (
+  duration: number = 300,
+  hover: boolean = true,
+  translate: boolean = true,
+) => {
+  const ROTATIONS = ['-rotate-2', 'rotate-2'] as const
 
-  return classBase + ' ' + rotationClass;
+  const TRANSLATES = [
+    'translate-y-0',
+    'translate-y-px',
+    'translate-y-[2px]',
+    '-translate-y-px',
+    '-translate-y-[2px]',
+  ] as const
+
+  const rotationClass = ROTATIONS[Math.floor(Math.random() * ROTATIONS.length)]
+
+  const translateClass = translate ? TRANSLATES[Math.floor(Math.random() * TRANSLATES.length)] : ''
+
+  return `
+    block
+    max-w-max
+    transform
+    transition-all
+    duration-[${duration}ms]
+    ${hover ? 'hover:rotate-0 hover:translate-y-0' : ''}
+    ${rotationClass}
+    ${translateClass}
+  `.trim()
 }
 
 export const generateGroupedOffsetsX = (count: number, maxSpread: number = 100) => {

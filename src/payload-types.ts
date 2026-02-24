@@ -97,9 +97,11 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('uk' | 'en') | ('uk' | 'en')[];
   globals: {
     settings: Setting;
+    navbar: Navbar;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
+    navbar: NavbarSelect<false> | NavbarSelect<true>;
   };
   locale: 'uk' | 'en';
   user: User;
@@ -283,6 +285,25 @@ export interface Order {
    * Total in UAH
    */
   total: number;
+  paymentStatus?:
+    | ('pending' | 'created' | 'processing' | 'hold' | 'success' | 'failure' | 'reversed' | 'expired' | 'cancel')
+    | null;
+  /**
+   * Monobank invoice ID
+   */
+  monoInvoiceId?: string | null;
+  /**
+   * Monobank payment receipt
+   */
+  receipt?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   /**
    * Internal notes
    */
@@ -518,6 +539,9 @@ export interface OrdersSelect<T extends boolean = true> {
         phone?: T;
       };
   total?: T;
+  paymentStatus?: T;
+  monoInvoiceId?: T;
+  receipt?: T;
   notes?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -587,6 +611,77 @@ export interface Setting {
   footerText?: string | null;
   contactEmail?: string | null;
   breadcrumbs?: string | null;
+  /**
+   * Translatable text strings used across the frontend
+   */
+  ui?: {
+    orderSuccessTitle?: string | null;
+    orderSuccessMessage?: string | null;
+    backToHome?: string | null;
+    selectSize?: string | null;
+    sizeLabel?: string | null;
+    addToCart?: string | null;
+    categoryEmpty?: string | null;
+    cartEmpty?: string | null;
+    continueShopping?: string | null;
+    cartTotal?: string | null;
+    checkout?: string | null;
+    processing?: string | null;
+    subtotal?: string | null;
+    shipping?: string | null;
+    total?: string | null;
+    contactInfo?: string | null;
+    subscribeNewsletter?: string | null;
+    country?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    middleName?: string | null;
+    address?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+    phone?: string | null;
+    saveAddress?: string | null;
+    shippingWarning?: string | null;
+    paymentMethod?: string | null;
+    paymentSecure?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar".
+ */
+export interface Navbar {
+  id: number;
+  /**
+   * Optional heading displayed above or inside the navbar
+   */
+  heading?: string | null;
+  menuItems?:
+    | {
+        label: string;
+        link: {
+          type: 'page' | 'custom';
+          page?: (number | null) | Page;
+          url?: string | null;
+          newTab?: boolean | null;
+        };
+        children?:
+          | {
+              label: string;
+              link: {
+                type: 'page' | 'custom';
+                page?: (number | null) | Page;
+                url?: string | null;
+                newTab?: boolean | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -600,6 +695,77 @@ export interface SettingsSelect<T extends boolean = true> {
   footerText?: T;
   contactEmail?: T;
   breadcrumbs?: T;
+  ui?:
+    | T
+    | {
+        orderSuccessTitle?: T;
+        orderSuccessMessage?: T;
+        backToHome?: T;
+        selectSize?: T;
+        sizeLabel?: T;
+        addToCart?: T;
+        categoryEmpty?: T;
+        cartEmpty?: T;
+        continueShopping?: T;
+        cartTotal?: T;
+        checkout?: T;
+        processing?: T;
+        subtotal?: T;
+        shipping?: T;
+        total?: T;
+        contactInfo?: T;
+        subscribeNewsletter?: T;
+        country?: T;
+        firstName?: T;
+        lastName?: T;
+        middleName?: T;
+        address?: T;
+        postalCode?: T;
+        city?: T;
+        phone?: T;
+        saveAddress?: T;
+        shippingWarning?: T;
+        paymentMethod?: T;
+        paymentSecure?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar_select".
+ */
+export interface NavbarSelect<T extends boolean = true> {
+  heading?: T;
+  menuItems?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              page?: T;
+              url?: T;
+              newTab?: T;
+            };
+        children?:
+          | T
+          | {
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    page?: T;
+                    url?: T;
+                    newTab?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
