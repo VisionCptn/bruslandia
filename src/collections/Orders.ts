@@ -166,6 +166,42 @@ export const Orders: CollectionConfig = {
       },
     },
     {
+      name: 'paymentStatus',
+      type: 'select',
+      defaultValue: 'pending',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Created', value: 'created' },
+        { label: 'Processing', value: 'processing' },
+        { label: 'Hold', value: 'hold' },
+        { label: 'Success', value: 'success' },
+        { label: 'Failure', value: 'failure' },
+        { label: 'Reversed', value: 'reversed' },
+        { label: 'Expired', value: 'expired' },
+        { label: 'Cancelled', value: 'cancel' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'monoInvoiceId',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Monobank invoice ID',
+      },
+    },
+    {
+      name: 'receipt',
+      type: 'json',
+      admin: {
+        readOnly: true,
+        description: 'Monobank payment receipt',
+      },
+    },
+    {
       name: 'notes',
       type: 'textarea',
       admin: {

@@ -7,15 +7,20 @@ import { useCart } from '../context/CartContext'
 import { formatPrice } from '../utils/formatPrice'
 import { getRandomRotationClass } from '../utils/randomPosition'
 import type { UIStrings } from '../utils/getTranslations'
+import { countries } from '../utils/countries'
 
 interface CheckoutFormProps {
   t: UIStrings
+  paymentFailed?: boolean
 }
 
-export const CheckoutForm = ({ t }: CheckoutFormProps) => {
+export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) => {
   const { items, total } = useCart()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(
+    paymentFailed ? 'Оплату не завершено. Спробуйте ще раз.' : null,
+  )
 
   const [formData, setFormData] = useState({
     email: '',
@@ -29,8 +34,10 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
     phone: '',
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    const checked = (e.target as HTMLInputElement).checked
+    const type = (e.target as HTMLInputElement).type
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -39,58 +46,67 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
 
     if (items.length === 0) {
-      alert('Кошик порожній')
+      setError('Кошик порожній')
       return
     }
 
     setIsSubmitting(true)
 
     try {
-      const orderData = {
-        customerEmail: formData.email,
-        subscribeToNewsletter: formData.subscribeToNewsletter,
-        items: items.map((item) => ({
-          product: parseInt(item.productId, 10),
-          productTitle: item.title,
-          quantity: item.quantity,
-          size: item.size,
-          priceAtPurchase: item.price,
-        })),
-        shippingAddress: {
-          country: formData.country,
-          firstName: formData.firstName,
-          middleName: formData.middleName,
-          lastName: formData.lastName,
-          city: formData.city,
-          postalCode: formData.postalCode,
-          phone: formData.phone,
-        },
-        total,
-      }
-
-      console.log('Submitting order:', orderData)
-
-      const response = await fetch('/api/orders', {
+      // Step 1: create order in DB with paymentStatus 'pending'
+      const orderResponse = await fetch('/api/orders', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerEmail: formData.email,
+          subscribeToNewsletter: formData.subscribeToNewsletter,
+          items: items.map((item) => ({
+            product: parseInt(item.productId, 10),
+            productTitle: item.title,
+            quantity: item.quantity,
+            size: item.size,
+            priceAtPurchase: item.price,
+          })),
+          shippingAddress: {
+            country: formData.country,
+            firstName: formData.firstName,
+            middleName: formData.middleName,
+            lastName: formData.lastName,
+            city: formData.city,
+            postalCode: formData.postalCode,
+            phone: formData.phone,
+          },
+          total,
+          paymentStatus: 'pending',
+        }),
       })
 
-      if (response.ok) {
-        // Clear cart and redirect to success page
-        localStorage.removeItem('brys-cart')
-        router.push('/checkout/success')
-      } else {
-        throw new Error('Failed to create order')
-      }
-    } catch (error) {
-      console.error('Order error:', error)
-      alert('Помилка при оформленні замовлення. Спробуйте ще раз.')
-    } finally {
+      if (!orderResponse.ok) throw new Error('Failed to create order')
+      const order = (await orderResponse.json()) as { id: number; orderNumber: string }
+
+      // Step 2: create Mono invoice, link it to the order
+      const monoResponse = await fetch('/api/payments/mono', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: order.id,
+          amount: total,
+          orderNumber: order.orderNumber,
+          customerEmail: formData.email,
+        }),
+      })
+
+      if (!monoResponse.ok) throw new Error('Failed to create payment')
+      const { pageUrl } = (await monoResponse.json()) as { pageUrl: string }
+
+      // Step 3: redirect — cart cleared by SuccessView on return
+      window.location.href = pageUrl
+    } catch (err) {
+      console.error('Checkout error:', err)
+      setError('Помилка при оформленні замовлення. Спробуйте ще раз.')
       setIsSubmitting(false)
     }
   }
@@ -177,14 +193,19 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
           <div className="space-y-4">
             <div>
               <label className="block text-sm mb-2">{t.country}</label>
-              <input
-                type="text"
+              <select
                 name="country"
                 required
                 value={formData.country}
                 onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-3 focus:outline-none focus:border-black"
-              />
+                className="w-full border border-gray-300 px-4 py-3 focus:outline-none focus:border-black bg-white appearance-none"
+              >
+                {countries.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -280,9 +301,21 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
           </div>
 
           {/* Payment Method */}
-          <div className="space-y-4">
-            <h2 className="font-medium">{t.paymentMethod}</h2>
-            <p className="text-sm text-gray-600">{t.paymentSecure}</p>
+          <div className="space-y-3">
+            <h2 className="font-medium lowercase">{t.paymentMethod}</h2>
+            <div className="border border-black p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-4 h-4 rounded-full border-2 border-black bg-black flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Картка / Apple Pay / Google Pay</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{t.paymentSecure}</p>
+                </div>
+              </div>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-400 lowercase leading-tight text-right select-none">
+                plata<br />
+                <span className="font-normal">by mono</span>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -312,7 +345,7 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
           <div className="space-y-3 pt-4 border-t">
             <div className="flex justify-between text-sm">
               <span>Подарунковий сертифікат або код</span>
-              <button className="text-sm underline">Застосувати</button>
+              <button type="button" className="text-sm underline">Застосувати</button>
             </div>
 
             <div className="flex justify-between text-sm">
@@ -348,13 +381,21 @@ export const CheckoutForm = ({ t }: CheckoutFormProps) => {
             </div>
           </div>
 
+          {error && (
+            <div className="bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={isSubmitting}
             className={`w-full bg-[#1a1a1a] text-white py-4 px-6 text-lg lowercase hover:bg-black transition-colors ${getRandomRotationClass()} active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
           >
-            {isSubmitting ? t.processing : t.checkout}
+            {isSubmitting ? t.processing : 'оплатити'}
           </button>
+
+          <p className="text-center text-xs text-gray-400 lowercase">захищено plata by mono</p>
         </div>
       </div>
       </div>
