@@ -134,6 +134,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  role: 'superAdmin' | 'orderManager' | 'user';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -183,8 +184,10 @@ export interface Category {
    * Lower numbers appear first
    */
   order?: number | null;
+  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -244,6 +247,7 @@ export interface Product {
   inStock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -435,6 +439,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -477,8 +482,10 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   image?: T;
   order?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -507,6 +514,7 @@ export interface ProductsSelect<T extends boolean = true> {
   inStock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -682,6 +690,7 @@ export interface Navbar {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -766,6 +775,7 @@ export interface NavbarSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

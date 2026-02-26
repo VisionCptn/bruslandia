@@ -2,8 +2,12 @@ import type { GlobalConfig } from 'payload'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
+    update: ({ req: { user } }) => (user as any)?.role === 'superAdmin',
   },
   fields: [
     {

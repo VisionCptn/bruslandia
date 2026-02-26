@@ -5,8 +5,14 @@ export const Categories: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  versions: {
+    drafts: true,
+  },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user) return true
+      return { _status: { equals: 'published' } }
+    },
   },
   fields: [
     {
@@ -37,6 +43,14 @@ export const Categories: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Lower numbers appear first',
+      },
+    },
+    {
+      name: 'isActive',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
       },
     },
   ],
