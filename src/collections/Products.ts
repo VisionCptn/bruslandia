@@ -6,8 +6,14 @@ export const Products: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'price', 'inStock'],
   },
+  versions: {
+    drafts: true,
+  },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user) return true
+      return { _status: { equals: 'published' } }
+    },
   },
   fields: [
     {
