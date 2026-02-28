@@ -135,6 +135,22 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   role: 'superAdmin' | 'orderManager' | 'user';
+  firstName?: string | null;
+  lastName?: string | null;
+  addresses?:
+    | {
+        label?: string | null;
+        country?: string | null;
+        firstName: string;
+        lastName: string;
+        middleName?: string | null;
+        city: string;
+        postalCode?: string | null;
+        phone: string;
+        isDefault?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -292,6 +308,7 @@ export interface Order {
   paymentStatus?:
     | ('pending' | 'created' | 'processing' | 'hold' | 'success' | 'failure' | 'reversed' | 'expired' | 'cancel')
     | null;
+  user?: (number | null) | User;
   /**
    * Monobank invoice ID
    */
@@ -440,6 +457,22 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  firstName?: T;
+  lastName?: T;
+  addresses?:
+    | T
+    | {
+        label?: T;
+        country?: T;
+        firstName?: T;
+        lastName?: T;
+        middleName?: T;
+        city?: T;
+        postalCode?: T;
+        phone?: T;
+        isDefault?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -548,6 +581,7 @@ export interface OrdersSelect<T extends boolean = true> {
       };
   total?: T;
   paymentStatus?: T;
+  user?: T;
   monoInvoiceId?: T;
   receipt?: T;
   notes?: T;
@@ -653,6 +687,7 @@ export interface Setting {
     paymentMethod?: string | null;
     paymentSecure?: string | null;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -737,6 +772,7 @@ export interface SettingsSelect<T extends boolean = true> {
         paymentMethod?: T;
         paymentSecure?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -90,7 +90,7 @@ function isCurrent(href: string, currentPathname?: string) {
 
 export const MainMenuContent = ({ data, currentPathname }: Props) => {
   const navLabelId = useId();
-  const heading = data.heading ?? undefined;
+  const heading = data.heading ?? '';
 
   return (
     <nav aria-labelledby={navLabelId} className="flex h-full flex-col font-medium">

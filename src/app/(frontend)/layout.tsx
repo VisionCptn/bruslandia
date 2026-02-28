@@ -4,6 +4,7 @@ import './styles.css'
 import { cn } from '@/lib/utils'
 import { Inter as FontSans } from 'next/font/google'
 import { CartProvider } from './context/CartContext'
+import { AuthProvider } from './context/AuthContext'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -21,9 +22,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <CartProvider>
-          <main>{children}</main>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <main>{children}</main>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   )
