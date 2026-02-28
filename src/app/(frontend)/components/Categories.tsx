@@ -22,7 +22,21 @@ export const Categories = async () => {
         {categories.map((category) => {
           const image = typeof category.image === 'object' ? category.image : null
 
-          return (
+          const inactive = category.isActive === false
+
+          return inactive ? (
+            <div
+              key={category.id}
+              className="no-underline text-inherit opacity-40 cursor-not-allowed pointer-events-none"
+            >
+              <p className="mb-2 font-medium text-black">{category.title}</p>
+              <div className="relative aspect-square overflow-hidden">
+                {image?.url && (
+                  <Image src={image.url} alt={category.title || ''} fill className="object-cover" />
+                )}
+              </div>
+            </div>
+          ) : (
             <Link
               key={category.id}
               href={`/${category.slug}`}

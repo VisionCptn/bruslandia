@@ -7,7 +7,13 @@ export const Orders: CollectionConfig = {
     defaultColumns: ['orderNumber', 'customerEmail', 'total', 'status', 'createdAt'],
   },
   access: {
-    read: ({ req: { user } }) => Boolean(user),
+    read: ({ req: { user } }) => {
+      if (!user) return false
+      const role = (user as any)?.role
+      if (role === 'superAdmin' || role === 'orderManager') return true
+      // Match all orders placed with the user's email
+      return { customerEmail: { equals: user.email } }
+    },
     create: () => true,
   },
   fields: [
@@ -180,6 +186,14 @@ export const Orders: CollectionConfig = {
         { label: 'Expired', value: 'expired' },
         { label: 'Cancelled', value: 'cancel' },
       ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'user',
+      type: 'relationship',
+      relationTo: 'users',
       admin: {
         position: 'sidebar',
       },

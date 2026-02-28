@@ -41,9 +41,12 @@ const linkField: Field = {
 export const Navbar: GlobalConfig = {
   slug: 'navbar',
   label: 'Navbar',
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
-    update: ({ req }) => !!req.user,
+    update: ({ req: { user } }) => (user as any)?.role === 'superAdmin',
   },
   fields: [
     {

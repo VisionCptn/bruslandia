@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { BrysLogo, EyesIcon, SearchIcon } from './icons'
+import { BrysLogo, EyesIcon } from './icons'
 import { CartSheet } from './CartSheet'
 import { getTranslations } from '../utils/getTranslations'
 import { MenuSheet } from './MenuSheet'
+import { UserAccountLink } from './UserAccountLink'
 
 interface HeaderProps {
   isHomepage?: boolean
@@ -35,9 +36,7 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
               <BrysLogo width={700} height={300} className="text-black max-w-full h-auto" />
             </Link>
             <div className="flex items-center gap-4">
-              <button className="bg-transparent border-none cursor-pointer p-0">
-                <SearchIcon width={48} height={44} className="text-black" />
-              </button>
+              <UserAccountLink />
               <CartSheet t={t} />
               {/* <button className="bg-transparent border-none cursor-pointer p-0">
                 <KebabMenu width={48} height={44} className="text-black" />
@@ -67,9 +66,7 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
             </Link>
             <EyesIcon width={80} height={45} className="text-black" />
             <div className="flex items-center gap-4">
-              <button className="bg-transparent border-none cursor-pointer p-0">
-                <SearchIcon width={48} height={44} className="text-black" />
-              </button>
+              <UserAccountLink />
               <CartSheet t={t} />
               {/* <button className="bg-transparent border-none cursor-pointer p-0">
                 <KebabMenu width={48} height={44} className="text-black" />
