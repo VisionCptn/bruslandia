@@ -1,6 +1,36 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-d1-sqlite'
 
 export async function up({ db }: MigrateUpArgs): Promise<void> {
+  // Create navbar and related tables if they don't exist yet
+  await db.run(sql`CREATE TABLE IF NOT EXISTS \`navbar\` (
+    \`id\` integer PRIMARY KEY NOT NULL,
+    \`heading\` text,
+    \`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+    \`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL
+  );`)
+  await db.run(sql`CREATE TABLE IF NOT EXISTS \`navbar_menu_items\` (
+    \`_order\` integer NOT NULL,
+    \`_parent_id\` integer NOT NULL,
+    \`id\` text PRIMARY KEY NOT NULL,
+    \`label\` text NOT NULL,
+    \`link_type\` text DEFAULT 'page',
+    \`link_new_tab\` integer DEFAULT false,
+    \`link_url\` text,
+    \`link_page_id\` integer,
+    FOREIGN KEY (\`_parent_id\`) REFERENCES \`navbar\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );`)
+  await db.run(sql`CREATE TABLE IF NOT EXISTS \`navbar_menu_items_children\` (
+    \`_order\` integer NOT NULL,
+    \`_parent_id\` text NOT NULL,
+    \`id\` text PRIMARY KEY NOT NULL,
+    \`label\` text NOT NULL,
+    \`link_type\` text DEFAULT 'page',
+    \`link_new_tab\` integer DEFAULT false,
+    \`link_url\` text,
+    \`link_page_id\` integer,
+    FOREIGN KEY (\`_parent_id\`) REFERENCES \`navbar_menu_items\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );`)
+
   await db.run(sql`ALTER TABLE \`navbar\` ADD COLUMN \`_status\` text DEFAULT 'draft';`)
   await db.run(sql`ALTER TABLE \`settings\` ADD COLUMN \`_status\` text DEFAULT 'draft';`)
 
