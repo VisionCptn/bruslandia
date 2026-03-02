@@ -653,6 +653,7 @@ export interface Setting {
     paymentMethod?: string | null;
     paymentSecure?: string | null;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -737,6 +738,7 @@ export interface SettingsSelect<T extends boolean = true> {
         paymentMethod?: T;
         paymentSecure?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

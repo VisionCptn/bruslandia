@@ -1,84 +1,79 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetClose,
-} from "@/components/ui/sheet";
-import { KebabMenu } from "./icons/KebabMenu";
-import { MainMenuContent } from "./MainMenuContent";
+import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { Sheet, SheetContent, SheetHeader, SheetClose } from '@/components/ui/sheet'
+import { KebabMenu } from '../icons/KebabMenu'
+import { MainMenuContent } from './MainMenuContent'
 
 type NavbarLink =
   | {
-      type: "page";
+      type: 'page'
       page: null | {
         // adjust to your CMS schema
-        slug?: string | null;
-        url?: string | null;
-      };
-      url: string | null;
-      newTab: boolean;
+        slug?: string | null
+        url?: string | null
+      }
+      url: string | null
+      newTab: boolean
     }
   | {
-      type: "custom";
-      page: null;
-      url: string | null;
-      newTab: boolean;
-    };
-    
+      type: 'custom'
+      page: null
+      url: string | null
+      newTab: boolean
+    }
+
 type PayloadChildItem = {
-    id: string;
-    label: string;
-    link: NavbarLink;
-  };
+  id: string
+  label: string
+  link: NavbarLink
+}
 
 type PayloadNavItem = {
-    id: string;
-    label: string;
-    link: NavbarLink;
-    children?: PayloadChildItem[];
-};
+  id: string
+  label: string
+  link: NavbarLink
+  children?: PayloadChildItem[]
+}
 
 type PayloadNavbar = {
-    id: number;
-    heading?: string | null;
-    menuItems: PayloadNavItem[];
-    updatedAt?: string;
-    createdAt?: string;
-    globalType?: string;
-};
+  id: number
+  heading?: string | null
+  menuItems: PayloadNavItem[]
+  updatedAt?: string
+  createdAt?: string
+  globalType?: string
+}
 
 export const MenuSheet = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-  const [navbar, setNavbar] = useState<PayloadNavbar | null>(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+  const [navbar, setNavbar] = useState<PayloadNavbar | null>(null)
 
   useEffect(() => {
-    let cancelled = false;
+    let cancelled = false
 
-    (async () => {
+    ;(async () => {
       try {
         // Adjust if your Payload lives on another domain:
         // const base = process.env.NEXT_PUBLIC_PAYLOAD_URL;
         // const res = await fetch(`${base}/api/globals/navbar?depth=2`, { cache: "no-store" });
-        const res = await fetch(`/api/globals/navbar?depth=2`, { cache: "no-store" });
-        if (!res.ok) return;
+        const res = await fetch(`/api/globals/navbar?depth=2`, { cache: 'no-store' })
+        if (!res.ok) return
 
-        const data = (await res.json()) as PayloadNavbar;
-        console.log(data);
-        if (!cancelled) setNavbar(data);
+        const data = (await res.json()) as PayloadNavbar
+        console.log(data)
+        if (!cancelled) setNavbar(data)
       } catch {
-        throw new Error("Failed to fetch Navbar data");
+        throw new Error('Failed to fetch Navbar data')
       }
-    })();
+    })()
 
     return () => {
-      cancelled = true;
-    };
-  }, []);
+      cancelled = true
+    }
+  }, [])
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -112,11 +107,9 @@ export const MenuSheet = () => {
         </SheetHeader>
 
         <div className="flex-1 p-8 lg:px-[80px] lg:pb-[50px] overflow-hidden">
-          <MainMenuContent
-            data={navbar}
-          />
+          <MainMenuContent data={navbar} />
         </div>
       </SheetContent>
     </Sheet>
-  );
-};
+  )
+}

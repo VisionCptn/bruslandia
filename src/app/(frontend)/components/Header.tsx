@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { BrysLogo, EyesIcon, SearchIcon } from './icons'
 import { CartSheet } from './CartSheet'
 import { getTranslations } from '../utils/getTranslations'
-import { MenuSheet } from './MenuSheet'
+import { MenuSheet } from './navbar/MenuSheet'
+import { useCallback } from 'react'
 
 interface HeaderProps {
   isHomepage?: boolean
