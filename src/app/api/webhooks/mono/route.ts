@@ -87,6 +87,8 @@ export async function POST(request: Request) {
       }
 
       try {
+        const settings = await payload.findGlobal({ slug: 'settings' })
+
         await payload.sendEmail({
           to: order.customerEmail,
           subject: `замовлення ${order.orderNumber} підтверджено`,
@@ -98,6 +100,8 @@ export async function POST(request: Request) {
             >[0]['items'],
             shippingAddress: order.shippingAddress ?? {},
             total: order.total,
+            contactEmail: settings.contactEmail,
+            instagramUrl: settings.instagramUrl,
           }),
         })
       } catch (emailErr) {

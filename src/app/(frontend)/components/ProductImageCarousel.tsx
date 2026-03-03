@@ -5,9 +5,34 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
+  useCarousel,
 } from '@/components/ui/carousel'
+
+function PrevButton() {
+  const { scrollPrev, canScrollPrev } = useCarousel()
+  return (
+    <button
+      onClick={scrollPrev}
+      disabled={!canScrollPrev}
+      className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-black drop-shadow disabled:opacity-30 select-none"
+    >
+      {'<'}
+    </button>
+  )
+}
+
+function NextButton() {
+  const { scrollNext, canScrollNext } = useCarousel()
+  return (
+    <button
+      onClick={scrollNext}
+      disabled={!canScrollNext}
+      className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl text-black drop-shadow disabled:opacity-30 select-none"
+    >
+      {'>'}
+    </button>
+  )
+}
 
 interface ProductImage {
   url: string
@@ -40,8 +65,8 @@ export const ProductImageCarousel = ({ images }: ProductImageCarouselProps) => {
       </CarouselContent>
       {images.length > 1 && (
         <>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
+          <PrevButton />
+          <NextButton />
         </>
       )}
     </Carousel>

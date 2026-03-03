@@ -31,7 +31,7 @@ export const CartSheet = ({ t }: CartSheetProps) => {
         {hasItems ? (
           <BasketFilledIcon width={48} height={51} className="text-black" />
         ) : (
-          <BasketIcon width={48} height={44} className="text-black" />
+          <BasketIcon width={48} height={51} className="text-black" />
         )}
       </button>
 

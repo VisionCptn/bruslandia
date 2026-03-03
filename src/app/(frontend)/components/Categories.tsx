@@ -18,7 +18,7 @@ export const Categories = async () => {
 
   return (
     <section className="px-6 flex-1">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-1">
         {categories.map((category) => {
           const image = typeof category.image === 'object' ? category.image : null
 
@@ -30,9 +30,9 @@ export const Categories = async () => {
               className="no-underline text-inherit opacity-40 cursor-not-allowed pointer-events-none"
             >
               <p className="mb-2 font-medium text-black">{category.title}</p>
-              <div className="relative aspect-square overflow-hidden">
+              <div className="relative w-full overflow-hidden">
                 {image?.url && (
-                  <Image src={image.url} alt={category.title || ''} fill className="object-cover" />
+                  <Image src={image.url} alt={category.title || ''} width={image.width ?? 800} height={image.height ?? 1000} className="w-full h-auto object-cover" />
                 )}
               </div>
             </div>
@@ -43,9 +43,9 @@ export const Categories = async () => {
               className="no-underline text-inherit"
             >
               <p className="mb-2 font-medium text-black">{category.title}</p>
-              <div className="relative aspect-square overflow-hidden">
+              <div className="relative w-full overflow-hidden">
                 {image?.url && (
-                  <Image src={image.url} alt={category.title || ''} fill className="object-cover" />
+                  <Image src={image.url} alt={category.title || ''} width={image.width ?? 800} height={image.height ?? 1000} className="w-full h-auto object-cover" />
                 )}
               </div>
             </Link>

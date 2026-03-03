@@ -14,7 +14,14 @@ interface ProductActionsProps {
   t: Pick<UIStrings, 'selectSize' | 'sizeLabel' | 'addToCart'>
 }
 
-export const ProductActions = ({ productId, title, image, price, sizes, t }: ProductActionsProps) => {
+export const ProductActions = ({
+  productId,
+  title,
+  image,
+  price,
+  sizes,
+  t,
+}: ProductActionsProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const { addItem } = useCart()
 
@@ -49,8 +56,8 @@ export const ProductActions = ({ productId, title, image, price, sizes, t }: Pro
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={`
-                    relative w-24 h-12 flex items-center justify-center ml-3 border-2 transition-all duration-200
-                    ${isSelected ? 'border-black' : 'border-gray-300'}
+                    relative w-24 max-w-none! h-12 flex items-center justify-center transition-all duration-200
+                    ${isSelected ? 'border-2 border-black' : 'border border-gray-300'}
                     ${getRandomRotationClass()}
                   `}
                 >
@@ -73,7 +80,7 @@ export const ProductActions = ({ productId, title, image, price, sizes, t }: Pro
       {/* Add to Cart */}
       <button
         onClick={handleAddToCart}
-        className={`mt-4 bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass} transition-transform active:scale-95`}
+        className={`mt-4 bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass()} transition-transform active:scale-95`}
       >
         {t.addToCart}
       </button>
