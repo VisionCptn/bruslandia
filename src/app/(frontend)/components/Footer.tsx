@@ -26,11 +26,10 @@ export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => 
 
         {/* Nav links left-aligned */}
         <div className="text-sm">
-          <Link href="/search" className="block text-inherit no-underline hover:underline">search</Link>
-          <Link href="/privacy" className="block text-inherit no-underline hover:underline">privacy policy</Link>
-          <Link href="/shipping" className="block text-inherit no-underline hover:underline">shipping and returns</Link>
-          <Link href="/terms" className="block text-inherit no-underline hover:underline">terms or service</Link>
-          <Link href="/contact" className="block text-inherit no-underline hover:underline">contact</Link>
+          <Link href="/pages/public-offer" className="block text-inherit no-underline hover:underline">public offer agreement</Link>
+          <Link href="/pages/privacy-policy" className="block text-inherit no-underline hover:underline">privacy policy</Link>
+          <Link href="/pages/delivery-returns" className="block text-inherit no-underline hover:underline">delivery & returns</Link>
+          <Link href="/pages/contact" className="block text-inherit no-underline hover:underline">contact</Link>
         </div>
 
         {/* Marta + cat side by side */}
@@ -45,11 +44,10 @@ export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => 
         <MartaIcon width={120} height={75} className="text-black" />
 
         <div className="text-sm">
-          <Link href="/search" className="block text-inherit no-underline hover:underline">search</Link>
-          <Link href="/privacy" className="block text-inherit no-underline hover:underline">privacy policy</Link>
-          <Link href="/shipping" className="block text-inherit no-underline hover:underline">shipping and returns</Link>
-          <Link href="/terms" className="block text-inherit no-underline hover:underline">terms or service</Link>
-          <Link href="/contact" className="block text-inherit no-underline hover:underline">contact</Link>
+          <Link href="/pages/public-offer" className="block text-inherit no-underline hover:underline">public offer agreement</Link>
+          <Link href="/pages/privacy-policy" className="block text-inherit no-underline hover:underline">privacy policy</Link>
+          <Link href="/pages/delivery-returns" className="block text-inherit no-underline hover:underline">delivery & returns</Link>
+          <Link href="/pages/contact" className="block text-inherit no-underline hover:underline">contact</Link>
         </div>
 
         <a

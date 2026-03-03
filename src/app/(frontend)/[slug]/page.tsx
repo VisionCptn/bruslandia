@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           ]}
         />
 
-        <h1 className="text-2xl font-medium mb-8">{category.title}</h1>
+        <h1 className="hidden md:block text-2xl font-medium mb-8">{category.title}</h1>
 
         {products.length === 0 ? (
           <p className="text-gray-500">{t.categoryEmpty}</p>

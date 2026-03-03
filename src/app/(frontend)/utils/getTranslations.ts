@@ -3,6 +3,7 @@ import config from '@payload-config'
 import { headers } from 'next/headers'
 
 export type UIStrings = {
+  eyesLabel: string
   cartEmpty: string
   continueShopping: string
   cartTotal: string
@@ -35,6 +36,7 @@ export type UIStrings = {
 }
 
 const fallback: UIStrings = {
+  eyesLabel: 'ця рись бачить тебе наскрізь',
   cartEmpty: 'Корзина порожня',
   continueShopping: 'продовжити покупки',
   cartTotal: 'Сума',
@@ -84,10 +86,13 @@ export async function getTranslations(locale?: string): Promise<UIStrings> {
     })
 
     const ui = settings.ui as Partial<UIStrings> | undefined
-    if (!ui) return fallback
 
     // Merge with fallback so missing fields never break the UI
-    return { ...fallback, ...ui }
+    return {
+      ...fallback,
+      ...(ui ?? {}),
+      ...(settings.eyesLabel ? { eyesLabel: settings.eyesLabel } : {}),
+    }
   } catch {
     return fallback
   }

@@ -58,3 +58,4 @@ bundled/
 
 # Seed data (may contain sensitive info)
 src/scripts/seed.json
+preview-email.mjs

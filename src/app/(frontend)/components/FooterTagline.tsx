@@ -10,7 +10,7 @@ export const FooterTagline = async () => {
   return (
     <div className="text-center mb-10">
       {settings.footerText && (
-        <div className="text-sm leading-[3] mb-6 overflow-hidden">
+        <div className="text-sm leading-[2] mb-6 overflow-hidden">
           {settings.footerText.split('\n').map((line, i) => {
             const words = line.split(' ')
             const pairs = []
@@ -21,7 +21,7 @@ export const FooterTagline = async () => {
             }
 
             return (
-              <div key={i} className="flex flex-wrap items-center justify-center gap-x-4">
+              <div key={i} className="flex flex-wrap items-center justify-center gap-x-2">
                 {pairs.map((pair, pairIdx) => {
                   return (
                     <span

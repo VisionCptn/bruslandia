@@ -38,6 +38,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
     middleName: '',
     lastName: '',
     city: '',
+    deliveryAddress: '',
     postalCode: '',
     phone: '',
   })
@@ -58,6 +59,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
             lastName: addr.lastName || prev.lastName,
             middleName: addr.middleName || prev.middleName,
             city: addr.city || prev.city,
+            deliveryAddress: addr.deliveryAddress || prev.deliveryAddress,
             postalCode: addr.postalCode || prev.postalCode,
             phone: addr.phone || prev.phone,
           }))
@@ -97,6 +99,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
       lastName: formData.lastName,
       middleName: formData.middleName,
       city: formData.city,
+      deliveryAddress: formData.deliveryAddress,
       postalCode: formData.postalCode,
       phone: formData.phone,
       isDefault: existing.length === 0,
@@ -110,7 +113,10 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
   }
 
   // Create a new user account and save address, returns userId or null if email exists
-  const createUserAndSave = async (email: string, pwd: string): Promise<number | 'exists' | null> => {
+  const createUserAndSave = async (
+    email: string,
+    pwd: string,
+  ): Promise<number | 'exists' | null> => {
     const res = await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -126,6 +132,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
             lastName: formData.lastName,
             middleName: formData.middleName,
             city: formData.city,
+            deliveryAddress: formData.deliveryAddress,
             postalCode: formData.postalCode,
             phone: formData.phone,
             isDefault: true,
@@ -208,6 +215,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
             middleName: formData.middleName,
             lastName: formData.lastName,
             city: formData.city,
+            deliveryAddress: formData.deliveryAddress,
             postalCode: formData.postalCode,
             phone: formData.phone,
           },
@@ -352,7 +360,9 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
               <input
                 type="text"
                 required
-                name="address"
+                name="deliveryAddress"
+                value={formData.deliveryAddress}
+                onChange={handleChange}
                 className="w-full border border-gray-300 px-4 py-3 focus:outline-none focus:border-black"
               />
             </div>
@@ -416,7 +426,10 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
                 <input
                   type="password"
                   value={password}
-                  onChange={(e) => { setPassword(e.target.value); setPasswordError(null) }}
+                  onChange={(e) => {
+                    setPassword(e.target.value)
+                    setPasswordError(null)
+                  }}
                   placeholder="Пароль"
                   required
                   minLength={8}
@@ -425,7 +438,10 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
                 <input
                   type="password"
                   value={confirmPassword}
-                  onChange={(e) => { setConfirmPassword(e.target.value); setPasswordError(null) }}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    setPasswordError(null)
+                  }}
                   placeholder="Підтвердити пароль"
                   required
                   minLength={8}
@@ -497,38 +513,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
               </div>
             ))}
 
-            <div className="space-y-3 pt-4 border-t">
-              <div className="flex justify-between text-sm">
-                <span>Подарунковий сертифікат або код</span>
-                <button type="button" className="text-sm underline">
-                  Застосувати
-                </button>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span>{t.subtotal}</span>
-                <span>{formatPrice(total)}</span>
-              </div>
-
-              <div className="flex justify-between text-sm items-center">
-                <div className="flex items-center gap-1">
-                  <span>{t.shipping}</span>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="text-gray-400"
-                  >
-                    <circle cx="8" cy="8" r="7" stroke="currentColor" />
-                    <text x="8" y="11" fontSize="10" textAnchor="middle" fill="currentColor">
-                      ?
-                    </text>
-                  </svg>
-                </div>
-                <span className="text-gray-500">Enter shipping address</span>
-              </div>
-
+            <div className="space-y-3 pt-4">
               <div className="flex justify-between text-lg font-medium pt-3 border-t">
                 <span>{t.total}</span>
                 <div className="text-right">

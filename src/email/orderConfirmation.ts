@@ -11,6 +11,7 @@ interface ShippingAddress {
   lastName?: string | null
   country?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   postalCode?: string | null
   phone?: string | null
 }
@@ -21,13 +22,18 @@ interface OrderEmailData {
   items: OrderItem[]
   shippingAddress: ShippingAddress
   total: number
+  contactEmail?: string | null
+  instagramUrl?: string | null
 }
 
 const formatPrice = (amount: number) => `${amount} ₴`
 
+const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://bryslandia.com'
+
 export function buildOrderConfirmationEmail(order: OrderEmailData): string {
-  const { orderNumber, items, shippingAddress, total } = order
-  const { firstName, middleName, lastName, country, city, postalCode, phone } = shippingAddress
+  const { orderNumber, items, shippingAddress, total, contactEmail, instagramUrl } = order
+  const { firstName, middleName, lastName, country, city, deliveryAddress, postalCode, phone } =
+    shippingAddress
 
   const fullName = [lastName, firstName, middleName].filter(Boolean).join(' ')
 
@@ -35,57 +41,71 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
     .map(
       (item) => `
       <tr>
-        <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5;">
-          <span style="font-size: 14px; color: #1a1a1a;">${item.productTitle ?? 'Товар'}</span>
-          ${item.size ? `<br><span style="font-size: 12px; color: #888;">розмір: ${item.size.toUpperCase()}</span>` : ''}
+        <td style="padding: 12px 0; border-bottom: 1px solid #e8e8e8; font-size: 14px; color: #1a1a1a;">
+          ${item.productTitle ?? 'Товар'}${item.size ? `<br><span style="font-size: 12px; color: #999;">розмір: ${item.size.toUpperCase()}</span>` : ''}
         </td>
-        <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; text-align: center;">
-          <span style="font-size: 14px; color: #1a1a1a;">${item.quantity}</span>
-        </td>
-        <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; text-align: right;">
-          <span style="font-size: 14px; color: #1a1a1a;">${formatPrice(item.priceAtPurchase * item.quantity)}</span>
-        </td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e8e8e8; font-size: 14px; color: #1a1a1a; text-align: center;">${item.quantity}</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e8e8e8; font-size: 14px; color: #1a1a1a; text-align: right;">${formatPrice(item.priceAtPurchase * item.quantity)}</td>
       </tr>`,
     )
     .join('')
+
+  const contactLinks = [
+    contactEmail
+      ? `<a href="mailto:${contactEmail}" style="color: #1a1a1a; text-decoration: none; font-size: 13px;">${contactEmail}</a>`
+      : null,
+    instagramUrl
+      ? `<a href="${instagramUrl}" style="color: #1a1a1a; text-decoration: none; font-size: 13px;">інстаграм</a>`
+      : null,
+  ]
+    .filter(Boolean)
+    .join('&nbsp;&nbsp;·&nbsp;&nbsp;')
 
   return `<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Підтвердження замовлення ${orderNumber}</title>
+  <title>замовлення ${orderNumber}</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; background-color: #1a1a1a; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 40px 20px;">
     <tr>
       <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #ffffff;">
+        <table width="560" cellpadding="0" cellspacing="0" style="max-width: 560px; width: 100%;">
 
-          <!-- Header -->
+          <!-- Creature image banner (overlaps white card) -->
           <tr>
-            <td style="padding: 40px 40px 30px; border-bottom: 2px solid #1a1a1a;">
-              <h1 style="margin: 0; font-size: 28px; font-weight: 400; letter-spacing: 4px; color: #1a1a1a; text-transform: lowercase;">bryslandia</h1>
+            <td style="padding-bottom: 0; line-height: 0; font-size: 0;">
+              <img
+                src="${baseUrl}/email-creature.png"
+                alt=""
+                width="560"
+                style="display: block; width: 100%; max-width: 560px; border-radius: 12px 12px 0 0; margin-bottom: -80px; position: relative; z-index: 2;"
+              />
             </td>
           </tr>
 
-          <!-- Title -->
+          <!-- White card -->
           <tr>
-            <td style="padding: 40px 40px 20px;">
-              <h2 style="margin: 0 0 8px; font-size: 22px; font-weight: 400; color: #1a1a1a;">дякуємо за замовлення</h2>
-              <p style="margin: 0; font-size: 14px; color: #888;">замовлення <strong style="color: #1a1a1a;">${orderNumber}</strong> прийнято в обробку</p>
-            </td>
-          </tr>
+            <td style="background-color: #ffffff; border-radius: 12px; padding: 100px 40px 40px; position: relative;">
 
-          <!-- Items -->
-          <tr>
-            <td style="padding: 0 40px 30px;">
+              <!-- Logo -->
+              <div style="margin: 0 0 20px;"><img src="${baseUrl}/email-logo.svg" width="120" height="52" alt="brys" style="display:block;" /></div>
+
+              <!-- Order number -->
+              <p style="margin: 0 0 16px; font-size: 12px; color: #999; letter-spacing: 1px; text-transform: lowercase;">замовлення ${orderNumber}</p>
+
+              <!-- Headline angled -->
+              <h2 style="margin: 0 0 28px; font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1.3; display: inline-block; transform: rotate(-2deg); -webkit-transform: rotate(-2deg); transform-origin: left center;">рись дякує та вже пакує ваші товари</h2>
+
+              <!-- Items table -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <thead>
                   <tr>
-                    <th style="padding: 10px 0; font-size: 12px; font-weight: 400; color: #888; text-align: left; border-bottom: 1px solid #e5e5e5; text-transform: lowercase; letter-spacing: 1px;">товар</th>
-                    <th style="padding: 10px 0; font-size: 12px; font-weight: 400; color: #888; text-align: center; border-bottom: 1px solid #e5e5e5; text-transform: lowercase; letter-spacing: 1px;">кількість</th>
-                    <th style="padding: 10px 0; font-size: 12px; font-weight: 400; color: #888; text-align: right; border-bottom: 1px solid #e5e5e5; text-transform: lowercase; letter-spacing: 1px;">ціна</th>
+                    <th style="padding: 8px 0; font-size: 11px; font-weight: 400; color: #999; text-align: left; border-bottom: 1px solid #e8e8e8; text-transform: lowercase; letter-spacing: 1px;">товар</th>
+                    <th style="padding: 8px 0; font-size: 11px; font-weight: 400; color: #999; text-align: center; border-bottom: 1px solid #e8e8e8; text-transform: lowercase; letter-spacing: 1px;">кіл-ть</th>
+                    <th style="padding: 8px 0; font-size: 11px; font-weight: 400; color: #999; text-align: right; border-bottom: 1px solid #e8e8e8; text-transform: lowercase; letter-spacing: 1px;">ціна</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -96,49 +116,45 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
               <!-- Total -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 16px;">
                 <tr>
-                  <td style="font-size: 16px; color: #1a1a1a;">разом</td>
-                  <td style="font-size: 18px; font-weight: 500; color: #1a1a1a; text-align: right;">${formatPrice(total)}</td>
+                  <td style="font-size: 14px; color: #999; text-transform: lowercase;">разом</td>
+                  <td style="font-size: 18px; font-weight: 600; color: #1a1a1a; text-align: right;">${formatPrice(total)}</td>
                 </tr>
               </table>
-            </td>
-          </tr>
 
-          <!-- Divider -->
-          <tr>
-            <td style="padding: 0 40px;">
-              <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 0;" />
-            </td>
-          </tr>
+              <!-- Divider -->
+              <hr style="border: none; border-top: 1px solid #e8e8e8; margin: 28px 0;" />
 
-          <!-- Shipping Address -->
-          <tr>
-            <td style="padding: 30px 40px;">
-              <h3 style="margin: 0 0 16px; font-size: 13px; font-weight: 400; color: #888; text-transform: lowercase; letter-spacing: 1px;">адреса доставки</h3>
-              <p style="margin: 0; font-size: 15px; color: #1a1a1a; line-height: 1.7;">
+              <!-- Address -->
+              <p style="margin: 0 0 10px; font-size: 11px; color: #999; letter-spacing: 1px; text-transform: lowercase;">адреса доставки</p>
+              <p style="margin: 0; font-size: 14px; color: #1a1a1a; line-height: 1.8; padding-left: 12px; border-left: 2px solid #e8e8e8;">
                 ${fullName}<br />
                 ${city}${postalCode ? `, ${postalCode}` : ''}<br />
+                ${deliveryAddress ? `${deliveryAddress}<br />` : ''}
                 ${country}<br />
                 ${phone}
               </p>
-            </td>
-          </tr>
 
-          <!-- Divider -->
-          <tr>
-            <td style="padding: 0 40px;">
-              <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 0;" />
-            </td>
-          </tr>
+              <!-- Divider -->
+              <hr style="border: none; border-top: 1px solid #e8e8e8; margin: 28px 0;" />
 
-          <!-- Footer -->
-          <tr>
-            <td style="padding: 30px 40px 40px;">
-              <p style="margin: 0 0 8px; font-size: 13px; color: #888; line-height: 1.6;">
-                якщо у вас виникли запитання — відповідайте на цей лист або пишіть нам напряму.
+              <!-- Footer message -->
+              <p style="margin: 0 0 4px; font-size: 13px; color: #999; line-height: 1.7;">
+                якщо виникнуть запитання — відповідайте на цей лист або пишіть нам напряму.
               </p>
-              <p style="margin: 0; font-size: 13px; color: #888;">
-                з любов'ю, <strong style="color: #1a1a1a;">bryslandia</strong>
-              </p>
+              <p style="margin: 0 0 24px; font-size: 13px; color: #1a1a1a;">з любов'ю, bryslandia</p>
+
+              <!-- Contact links right-aligned -->
+              ${contactLinks ? `<p style="margin: 0 0 28px; font-size: 13px; text-align: right; color: #999;">${contactLinks}</p>` : ''}
+
+              <!-- Eyes icon centered -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding-top: 8px;">
+                    <img src="${baseUrl}/email-eyes.svg" width="180" height="135" alt="" style="display:block; margin: 0 auto;" />
+                  </td>
+                </tr>
+              </table>
+
             </td>
           </tr>
 

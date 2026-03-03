@@ -47,7 +47,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const images = product.images || []
 
-  const offsets = generateGroupedOffsetsX(3, 100)
+  const offsets = generateGroupedOffsetsX(10, 100)
+  const relatedOffsets = generateGroupedOffsetsX(relatedProducts.length * 2, 50, 90)
 
   return (
     <main className="min-h-screen flex flex-col mx-auto max-w-[1600px]">
@@ -78,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="lg:sticky lg:top-6 lg:self-start">
             {category && (
               <span
-                className="text-[#A5A3A4] text-sm mb-1 block"
+                className="hidden md:block text-[#A5A3A4] text-sm mb-1"
                 style={{ marginLeft: offsets[0] }}
               >
                 {category.title}
@@ -94,7 +95,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <ProductActions
               productId={String(product.id)}
               title={product.title || ''}
-              image={images[0]?.image && typeof images[0].image === 'object' ? images[0].image.url || '' : ''}
+              image={
+                images[0]?.image && typeof images[0].image === 'object'
+                  ? images[0].image.url || ''
+                  : ''
+              }
               price={product.pricing?.uah || 0}
               sizes={product.sizes}
               t={t}
@@ -103,8 +108,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Description */}
             {product.description && (
               <div className="mb-6">
-                <h2 className="font-medium mt-5 mb-3">інформація</h2>
-                <div className="text-sm text-gray-700 prose prose-sm">
+                <h2 className="text-lg mt-5 mb-3" style={{ marginLeft: offsets[3] }}>
+                  інформація
+                </h2>
+                <div
+                  className="text-sm text-gray-700 prose prose-sm"
+                  style={{ marginLeft: offsets[4] }}
+                >
                   <RichText data={product.description} />
                 </div>
               </div>
@@ -113,8 +123,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Materials */}
             {product.materials && (
               <div className="mb-6">
-                <h2 className="font-medium ml-10">матеріали</h2>
-                <div className="text-sm text-gray-700 prose prose-sm">
+                <h2 className="text-lg ml-10" style={{ marginLeft: offsets[5] }}>
+                  матеріали
+                </h2>
+                <div
+                  className="text-sm text-gray-700 prose prose-sm"
+                  style={{ marginLeft: offsets[6] }}
+                >
                   <RichText data={product.materials} />
                 </div>
               </div>
@@ -127,7 +142,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-16 mb-12">
             <h2 className="text-lg mb-6">вам також можуть сподобатись</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {relatedProducts.map((relatedProduct) => {
+              {relatedProducts.map((relatedProduct, idx) => {
                 const firstImage =
                   relatedProduct.images?.[0]?.image &&
                   typeof relatedProduct.images[0].image === 'object'
@@ -150,10 +165,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         />
                       )}
                     </div>
-                    <p className="text-sm font-medium text-center">{relatedProduct.title}</p>
-                    <p className="text-sm text-gray-600 text-center">
+                    <div
+                      className="text-sm font-medium text-center"
+                      style={{ marginLeft: relatedOffsets[idx * 2] }}
+                    >
+                      {relatedProduct.title}
+                    </div>
+                    <div
+                      className="text-sm text-[#A5A3A4] text-center"
+                      style={{ marginLeft: relatedOffsets[idx * 2 + 1] }}
+                    >
                       {formatPrice(relatedProduct.pricing?.uah)}
-                    </p>
+                    </div>
                   </Link>
                 )
               })}

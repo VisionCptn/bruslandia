@@ -145,6 +145,11 @@ export const Orders: CollectionConfig = {
                   label: 'Місто',
                 },
                 {
+                  name: 'deliveryAddress',
+                  type: 'text',
+                  label: 'Адреса доставки або № відділення «Нова Пошта»',
+                },
+                {
                   name: 'postalCode',
                   type: 'text',
                   label: 'Поштовий індекс',
