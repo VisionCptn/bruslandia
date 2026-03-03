@@ -40,16 +40,16 @@ export const CartView = ({ t }: CartViewProps) => {
             ))}
           </div>
 
-          <div className="bg-gray-50 p-12 max-w-2xl mx-auto">
+          <div className="bg-gray-50 p-8 md:p-12 max-w-2xl">
             <div className="space-y-6">
-              <div className="flex justify-between items-center text-2xl">
+              <div className="flex justify-between items-center text-xl">
                 <span className="lowercase">{t.cartTotal}</span>
-                <span className="font-medium">{formatPrice(total)}</span>
+                <span>{formatPrice(total)}</span>
               </div>
 
               <button
                 onClick={() => router.push('/checkout')}
-                className={`w-full bg-[#1a1a1a] text-white py-5 px-8 text-xl lowercase hover:bg-black transition-colors ${getRandomRotationClass()} active:scale-95`}
+                className={`bg-[#1a1a1a] text-white py-4 px-10 text-lg lowercase hover:bg-black transition-colors ${getRandomRotationClass()} active:scale-95`}
               >
                 {t.checkout}
               </button>

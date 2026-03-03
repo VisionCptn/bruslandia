@@ -145,6 +145,7 @@ export interface User {
         lastName: string;
         middleName?: string | null;
         city: string;
+        deliveryAddress?: string | null;
         postalCode?: string | null;
         phone: string;
         isDefault?: boolean | null;
@@ -298,6 +299,7 @@ export interface Order {
     middleName?: string | null;
     lastName: string;
     city: string;
+    deliveryAddress?: string | null;
     postalCode?: string | null;
     phone: string;
   };
@@ -468,6 +470,7 @@ export interface UsersSelect<T extends boolean = true> {
         lastName?: T;
         middleName?: T;
         city?: T;
+        deliveryAddress?: T;
         postalCode?: T;
         phone?: T;
         isDefault?: T;
@@ -576,6 +579,7 @@ export interface OrdersSelect<T extends boolean = true> {
         middleName?: T;
         lastName?: T;
         city?: T;
+        deliveryAddress?: T;
         postalCode?: T;
         phone?: T;
       };
@@ -651,8 +655,15 @@ export interface Setting {
    */
   instagramUrl?: string | null;
   footerText?: string | null;
+  /**
+   * Контактний емейл
+   */
   contactEmail?: string | null;
   breadcrumbs?: string | null;
+  /**
+   * Tooltip shown on hover over the eyes icon in the header
+   */
+  eyesLabel?: string | null;
   /**
    * Translatable text strings used across the frontend
    */
@@ -739,6 +750,7 @@ export interface SettingsSelect<T extends boolean = true> {
   footerText?: T;
   contactEmail?: T;
   breadcrumbs?: T;
+  eyesLabel?: T;
   ui?:
     | T
     | {

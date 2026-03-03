@@ -19,6 +19,7 @@ export const Settings: GlobalConfig = {
     {
       name: 'instagramUrl',
       type: 'text',
+      defaultValue: 'https://www.instagram.com/martaleshak/',
       admin: {
         description: 'Full Instagram URL',
       },
@@ -33,12 +34,25 @@ export const Settings: GlobalConfig = {
     {
       name: 'contactEmail',
       type: 'email',
+      defaultValue: 'hello@bryslandia.com',
+      admin: {
+        description: 'Контактний емейл',
+      },
     },
     {
       name: 'breadcrumbs',
       type: 'text',
       defaultValue: 'всі товари',
       localized: true,
+    },
+    {
+      name: 'eyesLabel',
+      type: 'text',
+      localized: true,
+      defaultValue: 'ця рись бачить тебе наскрізь',
+      admin: {
+        description: 'Tooltip shown on hover over the eyes icon in the header',
+      },
     },
     {
       name: 'ui',
@@ -65,7 +79,7 @@ export const Settings: GlobalConfig = {
               type: 'text',
               localized: true,
               defaultValue:
-                'ми отримали ваше замовлення і зв\'яжемося з вами найближчим часом для підтвердження.',
+                "ми отримали ваше замовлення і зв'яжемося з вами найближчим часом для підтвердження.",
             },
             {
               name: 'backToHome',

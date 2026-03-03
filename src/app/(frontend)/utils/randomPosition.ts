@@ -33,7 +33,7 @@ export const getRandomRotationClass = (
   `.trim()
 }
 
-export const generateGroupedOffsetsX = (count: number, maxSpread: number = 100) => {
-  const baseOffset = Math.floor(Math.random() * (300 - maxSpread))
+export const generateGroupedOffsetsX = (count: number, maxSpread: number = 100, maxBase: number = 300) => {
+  const baseOffset = Math.floor(Math.random() * (maxBase - maxSpread))
   return Array.from({ length: count }, () => baseOffset + Math.floor(Math.random() * maxSpread))
 }
