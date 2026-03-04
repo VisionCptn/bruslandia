@@ -74,30 +74,27 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
       <td align="center">
         <table width="560" cellpadding="0" cellspacing="0" style="max-width: 560px; width: 100%;">
 
-          <!-- Creature image banner (overlaps white card) -->
+          <!-- Creature + white card -->
           <tr>
-            <td style="padding-bottom: 0; line-height: 0; font-size: 0;">
-              <img
-                src="${baseUrl}/email-creature.png"
-                alt=""
-                width="560"
-                style="display: block; width: 100%; max-width: 560px; border-radius: 12px 12px 0 0; margin-bottom: -80px; position: relative; z-index: 2;"
-              />
-            </td>
-          </tr>
-
-          <!-- White card -->
-          <tr>
-            <td style="background-color: #ffffff; border-radius: 12px; padding: 100px 40px 40px; position: relative;">
+            <td style="padding: 0;">
+              <div style="font-size: 0; line-height: 0;">
+                <img
+                  src="${baseUrl}/email-creature.png"
+                  alt=""
+                  width="560"
+                  style="display: block; width: 100%; border-radius: 12px 12px 0 0;"
+                />
+              </div>
+                <div style="background-color: #ffffff; border-radius: 0 0 12px 12px; padding: 36px 40px 40px; font-size: 16px; line-height: normal;">
 
               <!-- Logo -->
-              <div style="margin: 0 0 20px;"><img src="${baseUrl}/email-logo.svg" width="120" height="52" alt="brys" style="display:block;" /></div>
+              <div style="margin: 0 0 20px;"><img src="${baseUrl}/email-logo.png" width="120" height="52" alt="brys" style="display:block;" /></div>
 
               <!-- Order number -->
               <p style="margin: 0 0 16px; font-size: 12px; color: #999; letter-spacing: 1px; text-transform: lowercase;">замовлення ${orderNumber}</p>
 
               <!-- Headline angled -->
-              <h2 style="margin: 0 0 28px; font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1.3; display: inline-block; transform: rotate(-2deg); -webkit-transform: rotate(-2deg); transform-origin: left center;">рись дякує та вже пакує ваші товари</h2>
+              <div style="margin: 0 0 28px; overflow: hidden;"><h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1.3; display: inline-block; transform: rotate(-2deg); -webkit-transform: rotate(-2deg); transform-origin: left center;">рись дякує та вже пакує ваші товари</h2></div>
 
               <!-- Items table -->
               <table width="100%" cellpadding="0" cellspacing="0">
@@ -147,14 +144,11 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
               ${contactLinks ? `<p style="margin: 0 0 28px; font-size: 13px; text-align: right; color: #999;">${contactLinks}</p>` : ''}
 
               <!-- Eyes icon centered -->
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td align="center" style="padding-top: 8px;">
-                    <img src="${baseUrl}/email-eyes.svg" width="180" height="135" alt="" style="display:block; margin: 0 auto;" />
-                  </td>
-                </tr>
-              </table>
+              <div style="text-align: center; padding-top: 8px;">
+                <img src="${baseUrl}/email-eyes.png" width="180" height="135" alt="" style="display:inline-block;" />
+              </div>
 
+                </div><!-- end white card -->
             </td>
           </tr>
 
