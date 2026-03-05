@@ -1,6 +1,8 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useCart } from '../context/CartContext'
 import { getRandomRotationClass } from '../utils/randomPosition'
 import type { UIStrings } from '../utils/getTranslations'
@@ -23,6 +25,7 @@ export const ProductActions = ({
   t,
 }: ProductActionsProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  const [showSizeChart, setShowSizeChart] = useState(false)
   const { addItem } = useCart()
 
   const handleAddToCart = () => {
@@ -73,9 +76,27 @@ export const ProductActions = ({
               )
             })}
           </div>
-          <button className="text-sm text-gray-600 mt-4 block lowercase">таблиця розмірів</button>
+          <button
+            className="text-sm text-gray-600 mt-4 block lowercase underline cursor-pointer"
+            onClick={() => setShowSizeChart(true)}
+          >
+            таблиця розмірів
+          </button>
         </div>
       )}
+
+      <Dialog open={showSizeChart} onOpenChange={setShowSizeChart}>
+        <DialogContent className="p-0 max-w-fit">
+          <DialogTitle className="sr-only">таблиця розмірів</DialogTitle>
+          <Image
+            src="/size_chart.png"
+            alt="таблиця розмірів"
+            width={800}
+            height={600}
+            className="max-w-[90vw] max-h-[90vh] object-contain"
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Add to Cart */}
       <button

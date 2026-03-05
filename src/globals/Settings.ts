@@ -72,14 +72,13 @@ export const Settings: GlobalConfig = {
               name: 'orderSuccessTitle',
               type: 'text',
               localized: true,
-              defaultValue: 'дякуємо за замовлення!',
+              defaultValue: 'Брись дякує за ваше замовлення,',
             },
             {
-              name: 'orderSuccessMessage',
+              name: 'orderSuccessTitleTwo',
               type: 'text',
               localized: true,
-              defaultValue:
-                "ми отримали ваше замовлення і зв'яжемося з вами найближчим часом для підтвердження.",
+              defaultValue: 'і ви собі теж подякуйте',
             },
             {
               name: 'backToHome',
