@@ -31,7 +31,7 @@ export type UIStrings = {
   addToCart: string
   categoryEmpty: string
   orderSuccessTitle: string
-  orderSuccessMessage: string
+  orderSuccessTitleTwo: string
   backToHome: string
 }
 
@@ -64,9 +64,8 @@ const fallback: UIStrings = {
   sizeLabel: 'Розмір:',
   addToCart: 'додати в корзину',
   categoryEmpty: 'В цій категорії ще немає товарів',
-  orderSuccessTitle: 'дякуємо за замовлення!',
-  orderSuccessMessage:
-    "ми отримали ваше замовлення і зв'яжемося з вами найближчим часом для підтвердження.",
+  orderSuccessTitle: 'Брись дякує за ваше замовлення,',
+  orderSuccessTitleTwo: 'і ви собі теж подякуйте',
   backToHome: 'повернутися на головну',
 }
 

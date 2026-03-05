@@ -64,7 +64,7 @@ export const Header = async ({ isHomepage = false }: HeaderProps) => {
             </Link>
             <div className="group relative flex items-center">
               <EyesIcon width={80} height={45} className="text-black" />
-              <span className="absolute left-full top-1/2 ml-3 text-xs text-gray-500 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none bg-gray-100 px-3 py-1.5">
+              <span className="absolute font-extralight left-full top-1/2 ml-3 text-xs text-black whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none bg-[#D5D5D4] px-3 py-1.5">
                 {t.eyesLabel}
               </span>
             </div>

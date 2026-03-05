@@ -29,10 +29,16 @@ export const Categories = async () => {
               key={category.id}
               className="no-underline text-inherit opacity-40 cursor-not-allowed pointer-events-none"
             >
-              <p className="mb-2 font-medium text-black">{category.title}</p>
+              <p className="mb-2 font-bold text-black">{category.title}</p>
               <div className="relative w-full overflow-hidden">
                 {image?.url && (
-                  <Image src={image.url} alt={category.title || ''} width={image.width ?? 800} height={image.height ?? 1000} className="w-full h-auto object-cover" />
+                  <Image
+                    src={image.url}
+                    alt={category.title || ''}
+                    width={image.width ?? 800}
+                    height={image.height ?? 1000}
+                    className="w-full h-auto object-cover"
+                  />
                 )}
               </div>
             </div>
@@ -42,10 +48,16 @@ export const Categories = async () => {
               href={`/${category.slug}`}
               className="no-underline text-inherit"
             >
-              <p className="mb-2 font-medium text-black">{category.title}</p>
+              <p className="mb-2 font-bold text-black">{category.title}</p>
               <div className="relative w-full overflow-hidden">
                 {image?.url && (
-                  <Image src={image.url} alt={category.title || ''} width={image.width ?? 800} height={image.height ?? 1000} className="w-full h-auto object-cover" />
+                  <Image
+                    src={image.url}
+                    alt={category.title || ''}
+                    width={image.width ?? 800}
+                    height={image.height ?? 1000}
+                    className="w-full h-auto object-cover"
+                  />
                 )}
               </div>
             </Link>
