@@ -71,7 +71,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 <Link
                   key={product.id}
                   href={`/product/${product.slug}`}
-                  className="no-underline text-inherit group"
+                  className={`no-underline text-inherit group${product.inStock === false ? ' opacity-40 cursor-not-allowed pointer-events-none' : ''}`}
                 >
                   <div className="relative aspect-square overflow-hidden mb-3">
                     {firstImage?.url && (

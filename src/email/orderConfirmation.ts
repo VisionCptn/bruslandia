@@ -139,7 +139,8 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
 
               <!-- Footer message -->
               <p style="margin: 0 0 4px; font-size: 13px; color: #999; line-height: 1.7;">
-                якщо виникнуть запитання — відповідайте на цей лист або пишіть нам напряму.
+                якщо виникнуть запитання — бажано нам не писати,
+                але якщо не сила терпіти то пишіть сюди <a href="mailto:${contactEmail}" style="color: #1a1a1a; text-decoration: underline;">напряму</a>. або накриву
               </p>
               <p style="margin: 0 0 24px; font-size: 13px; color: #1a1a1a;">з любов'ю, bryslandia</p>
 
