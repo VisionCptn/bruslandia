@@ -503,9 +503,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
                 </div>
                 <div className="flex-1">
                   <p className="font-medium mb-1">{item.title}</p>
-                  {item.size && (
-                    <p className="text-sm text-gray-600">{item.size.toUpperCase()} / Black</p>
-                  )}
+                  {item.size && <p className="text-sm text-gray-600">{item.size.toUpperCase()}</p>}
                 </div>
                 <div className="text-right">
                   <p className="font-medium">{formatPrice(item.price * item.quantity)}</p>
