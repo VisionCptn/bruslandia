@@ -112,7 +112,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   інформація
                 </h2>
                 <div
-                  className="text-sm text-gray-700 prose prose-sm"
+                  className="text-sm font-light text-gray-700 prose prose-sm"
                   style={{ marginLeft: offsets[4] }}
                 >
                   <RichText data={product.description} />
@@ -127,7 +127,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   матеріали
                 </h2>
                 <div
-                  className="text-sm text-gray-700 prose prose-sm"
+                  className="text-sm font-light text-gray-700 prose prose-sm"
                   style={{ marginLeft: offsets[6] }}
                 >
                   <RichText data={product.materials} />

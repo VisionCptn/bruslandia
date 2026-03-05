@@ -74,18 +74,21 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
       <td align="center">
         <table width="560" cellpadding="0" cellspacing="0" style="max-width: 560px; width: 100%;">
 
-          <!-- Creature + white card -->
+          <!-- Creature -->
           <tr>
-            <td style="padding: 0;">
-              <div style="font-size: 0; line-height: 0;">
-                <img
-                  src="${baseUrl}/email-creature.png"
-                  alt=""
-                  width="560"
-                  style="display: block; width: 100%; border-radius: 12px 12px 0 0;"
-                />
-              </div>
-                <div style="background-color: #ffffff; border-radius: 0 0 12px 12px; padding: 36px 40px 40px; font-size: 16px; line-height: normal;">
+            <td style="padding: 0; font-size: 0; line-height: 0;">
+              <img
+                src="${baseUrl}/email-creature.png"
+                alt=""
+                width="560"
+                style="display: block; width: 100%; border-radius: 12px 12px 0 0;"
+              />
+            </td>
+          </tr>
+
+          <!-- White card -->
+          <tr>
+            <td bgcolor="#fefefe" style="background-color: #fefefe; border-radius: 0 0 12px 12px; padding: 36px 40px 40px;">
 
               <!-- Logo -->
               <div style="margin: 0 0 20px;"><img src="${baseUrl}/email-logo.png" width="120" height="52" alt="brys" style="display:block;" /></div>
@@ -148,7 +151,6 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
                 <img src="${baseUrl}/email-eyes.png" width="180" height="135" alt="" style="display:inline-block;" />
               </div>
 
-                </div><!-- end white card -->
             </td>
           </tr>
 

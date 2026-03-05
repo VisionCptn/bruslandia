@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { CatIcon, MartaIcon } from './icons'
+import { getRandomRotationClass } from '../utils/randomPosition'
 
 interface FooterProps {
   showTagline?: boolean
@@ -26,10 +27,30 @@ export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => 
 
         {/* Nav links left-aligned */}
         <div className="text-sm">
-          <Link href="/pages/public-offer" className="block text-inherit no-underline hover:underline">public offer agreement</Link>
-          <Link href="/pages/privacy-policy" className="block text-inherit no-underline hover:underline">privacy policy</Link>
-          <Link href="/pages/delivery-returns" className="block text-inherit no-underline hover:underline">delivery & returns</Link>
-          <Link href="/pages/contact" className="block text-inherit no-underline hover:underline">contact</Link>
+          <Link
+            href="/pages/public-offer"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            public offer agreement
+          </Link>
+          <Link
+            href="/pages/privacy-policy"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            privacy policy
+          </Link>
+          <Link
+            href="/pages/delivery-returns"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            delivery & returns
+          </Link>
+          <Link
+            href="/pages/contact"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            contact
+          </Link>
         </div>
 
         {/* Marta + cat side by side */}
@@ -44,10 +65,30 @@ export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => 
         <MartaIcon width={120} height={75} className="text-black" />
 
         <div className="text-sm">
-          <Link href="/pages/public-offer" className="block text-inherit no-underline hover:underline">public offer agreement</Link>
-          <Link href="/pages/privacy-policy" className="block text-inherit no-underline hover:underline">privacy policy</Link>
-          <Link href="/pages/delivery-returns" className="block text-inherit no-underline hover:underline">delivery & returns</Link>
-          <Link href="/pages/contact" className="block text-inherit no-underline hover:underline">contact</Link>
+          <Link
+            href="/pages/public-offer"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            public offer agreement
+          </Link>
+          <Link
+            href="/pages/privacy-policy"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            privacy policy
+          </Link>
+          <Link
+            href="/pages/delivery-returns"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            delivery & returns
+          </Link>
+          <Link
+            href="/pages/contact"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+          >
+            contact
+          </Link>
         </div>
 
         <a

@@ -669,7 +669,7 @@ export interface Setting {
    */
   ui?: {
     orderSuccessTitle?: string | null;
-    orderSuccessMessage?: string | null;
+    orderSuccessTitleTwo?: string | null;
     backToHome?: string | null;
     selectSize?: string | null;
     sizeLabel?: string | null;
@@ -755,7 +755,7 @@ export interface SettingsSelect<T extends boolean = true> {
     | T
     | {
         orderSuccessTitle?: T;
-        orderSuccessMessage?: T;
+        orderSuccessTitleTwo?: T;
         backToHome?: T;
         selectSize?: T;
         sizeLabel?: T;
