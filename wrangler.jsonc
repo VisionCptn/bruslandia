@@ -18,8 +18,9 @@
   "d1_databases": [
     {
       "binding": "D1",
-      "database_id": "bf5a0b7f-78ce-4e2c-a4a5-ea132b59f3f3",
+      "database_id": "f52292b4-391b-4c92-be3b-44b7b7c7b8be",
       "database_name": "brys-db-d1",
+      "migrations_dir": "src/migrations",
     },
   ],
   "services": [
