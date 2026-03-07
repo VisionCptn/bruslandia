@@ -15,8 +15,10 @@ import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
+import { Newsletter } from './collections/Newsletter'
 import { Settings } from './globals/Settings'
 import { Navbar } from './globals/Navbar'
+import { runSeedIfEmpty } from './seed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -47,7 +49,10 @@ export default buildConfig({
     defaultLocale: 'uk',
     fallback: true,
   },
-  collections: [Users, Media, Categories, Products, Orders, Pages],
+  onInit: async (payload) => {
+    await runSeedIfEmpty(payload)
+  },
+  collections: [Users, Media, Categories, Products, Orders, Pages, Newsletter],
   globals: [Settings, Navbar],
   editor: lexicalEditor(),
   email: resendAdapter({

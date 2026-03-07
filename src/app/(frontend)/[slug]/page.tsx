@@ -11,6 +11,23 @@ interface CategoryPageProps {
   params: Promise<{ slug: string }>
 }
 
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const { slug } = await params
+  const payload = await getPayload({ config })
+
+  const { docs: categories } = await payload.find({
+    collection: 'categories',
+    where: { slug: { equals: slug } },
+    limit: 1,
+  })
+
+  const category = categories[0]
+
+  return {
+    title: category?.title ?? slug,
+  }
+}
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params
   const payload = await getPayload({ config })

@@ -13,6 +13,23 @@ interface ProductPageProps {
   params: Promise<{ slug: string }>
 }
 
+export async function generateMetadata({ params }: ProductPageProps) {
+  const { slug } = await params
+  const payload = await getPayload({ config })
+
+  const { docs: products } = await payload.find({
+    collection: 'products',
+    where: { slug: { equals: slug } },
+    limit: 1,
+  })
+
+  const product = products[0]
+
+  return {
+    title: product?.title ?? slug,
+  }
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
   const payload = await getPayload({ config })
