@@ -8,8 +8,11 @@ import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'bryslandia.com',
+  title: {
+    default: 'brys - bryslandia.com',
+    template: '%s - bryslandia.com',
+  },
 }
 
 const fontSans = Geologica({
