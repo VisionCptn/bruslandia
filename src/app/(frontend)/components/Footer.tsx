@@ -1,13 +1,26 @@
 import Link from 'next/link'
 import { CatIcon, MartaIcon } from './icons'
-import { getRandomRotationClass } from '../utils/randomPosition'
+import { getRandomRotationClass, generateGroupedOffsetsX } from '../utils/randomPosition'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
 interface FooterProps {
   showTagline?: boolean
   taglineContent?: React.ReactNode
 }
 
-export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => {
+const offsets = generateGroupedOffsetsX(10, 100)
+
+export const Footer = async ({ showTagline = false, taglineContent }: FooterProps) => {
+  let instagramUrl = 'https://instagram.com'
+  try {
+    const payload = await getPayload({ config })
+    const settings = await payload.findGlobal({ slug: 'settings' })
+    instagramUrl = settings.instagramUrl ?? instagramUrl
+  } catch {
+    // DB not ready or settings missing — use fallback
+  }
+
   return (
     <footer className="py-10 px-6">
       {/* Tagline + eyes — shown only on homepage, centered */}
@@ -30,24 +43,35 @@ export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => 
           <Link
             href="/pages/public-offer"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[0] }}
           >
             public offer agreement
           </Link>
           <Link
             href="/pages/privacy-policy"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[1] }}
           >
             privacy policy
           </Link>
           <Link
             href="/pages/delivery-returns"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[2] }}
           >
             delivery & returns
           </Link>
           <Link
+            href="/pages/terms-of-use"
+            className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[3] }}
+          >
+            Terms of Use
+          </Link>
+          <Link
             href="/pages/contact"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[4] }}
           >
             contact
           </Link>
@@ -68,31 +92,35 @@ export const Footer = ({ showTagline = false, taglineContent }: FooterProps) => 
           <Link
             href="/pages/public-offer"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[0] }}
           >
             public offer agreement
           </Link>
           <Link
             href="/pages/privacy-policy"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[1] }}
           >
             privacy policy
           </Link>
           <Link
             href="/pages/delivery-returns"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[2] }}
           >
             delivery & returns
           </Link>
           <Link
             href="/pages/contact"
             className={`block text-inherit no-underline hover:underline ${getRandomRotationClass()}`}
+            style={{ marginLeft: offsets[3] }}
           >
             contact
           </Link>
         </div>
 
         <a
-          href="https://instagram.com"
+          href={instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-inherit no-underline text-sm hover:underline"

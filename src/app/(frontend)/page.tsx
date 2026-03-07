@@ -1,5 +1,9 @@
 import { Header, Categories, Footer, FooterTagline } from './components'
 
+export const metadata = {
+  title: 'brys - bryslandia.com',
+}
+
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {

@@ -69,7 +69,7 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
   <title>замовлення ${orderNumber}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #1a1a1a; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 40px 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 0px 20px 40px 20px;">
     <tr>
       <td align="center">
         <table width="560" cellpadding="0" cellspacing="0" style="max-width: 560px; width: 100%;">
@@ -88,7 +88,7 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
 
           <!-- White card -->
           <tr>
-            <td bgcolor="#fefefe" style="background-color: #fefefe; border-radius: 0 0 12px 12px; padding: 36px 40px 40px;">
+            <td bgcolor="#fefefe" style="background-color: #fefefe; border-radius: 0 0 12px 12px; padding: 36px 15px 40px;">
 
               <!-- Logo -->
               <div style="margin: 0 0 20px;"><img src="${baseUrl}/email-logo.png" width="120" height="52" alt="brys" style="display:block;" /></div>
@@ -149,7 +149,7 @@ export function buildOrderConfirmationEmail(order: OrderEmailData): string {
 
               <!-- Eyes icon centered -->
               <div style="text-align: center; padding-top: 8px;">
-                <img src="${baseUrl}/email-eyes.png" width="180" height="135" alt="" style="display:inline-block;" />
+                <img src="${baseUrl}/email-eyes.png" width="80" height="60" alt="" style="display:inline-block;" />
               </div>
 
             </td>
