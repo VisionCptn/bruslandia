@@ -6,11 +6,12 @@ const MONO_API_BASE = 'https://api.monobank.ua'
 
 export async function POST(request: Request) {
   try {
-    const { orderId, amount, orderNumber, customerEmail } = (await request.json()) as {
+    const { orderId, amount, orderNumber, customerEmail, items } = (await request.json()) as {
       orderId: number
       amount: number
       orderNumber: string
       customerEmail: string
+      items?: { name: string; qty: number; sum: number; unit: string }[]
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
           reference: orderNumber,
           comment: `Замовлення ${orderNumber}`,
           customerEmails: [customerEmail],
+          ...(items?.length ? { basketOrder: items } : {}),
         },
         redirectUrl: `${baseUrl}/checkout/success`,
         failUrl: `${baseUrl}/checkout?payment=failed`,
