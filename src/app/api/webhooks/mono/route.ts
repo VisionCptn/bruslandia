@@ -89,20 +89,28 @@ export async function POST(request: Request) {
       try {
         const settings = await payload.findGlobal({ slug: 'settings' })
 
+        const emailHtml = buildOrderConfirmationEmail({
+          orderNumber: order.orderNumber,
+          customerEmail: order.customerEmail,
+          items: (order.items ?? []) as Parameters<
+            typeof buildOrderConfirmationEmail
+          >[0]['items'],
+          shippingAddress: order.shippingAddress ?? {},
+          total: order.total,
+          contactEmail: settings.contactEmail,
+          instagramUrl: settings.instagramUrl,
+        })
+
         await payload.sendEmail({
           to: order.customerEmail,
           subject: `замовлення ${order.orderNumber} підтверджено`,
-          html: buildOrderConfirmationEmail({
-            orderNumber: order.orderNumber,
-            customerEmail: order.customerEmail,
-            items: (order.items ?? []) as Parameters<
-              typeof buildOrderConfirmationEmail
-            >[0]['items'],
-            shippingAddress: order.shippingAddress ?? {},
-            total: order.total,
-            contactEmail: settings.contactEmail,
-            instagramUrl: settings.instagramUrl,
-          }),
+          html: emailHtml,
+        })
+
+        await payload.sendEmail({
+          to: 'martaleshak@gmail.com',
+          subject: `нове замовлення ${order.orderNumber}`,
+          html: emailHtml,
         })
       } catch (emailErr) {
         payload.logger.error({ err: emailErr }, 'Failed to send order confirmation email')
