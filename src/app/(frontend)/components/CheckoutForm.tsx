@@ -237,6 +237,12 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
           amount: total,
           orderNumber: order.orderNumber,
           customerEmail: email,
+          items: items.map((item) => ({
+            name: item.title,
+            qty: item.quantity,
+            sum: Math.round(item.price * 100),
+            unit: 'шт',
+          })),
         }),
       })
 
