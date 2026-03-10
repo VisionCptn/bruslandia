@@ -20,7 +20,7 @@ export const EyesIcon = ({ className, width = 229, height = 171, style }: EyesIc
     <path
       d="M115.332 79.3921C115.332 79.3921 103.955 25.9341 44.1931 35.7501C44.1931 35.7501 59.1001 87.1261 115.332 79.3921Z"
       stroke="black"
-      strokeWidth="9.627"
+      strokeWidth="13"
       strokeMiterlimit="10"
     />
     <path
@@ -30,7 +30,7 @@ export const EyesIcon = ({ className, width = 229, height = 171, style }: EyesIc
     <path
       d="M123.441 121.471C123.441 121.471 133.887 72.3869 188.759 81.3999C188.759 81.3999 176.3 129.115 123.441 121.471Z"
       stroke="black"
-      strokeWidth="9.627"
+      strokeWidth="13"
       strokeMiterlimit="10"
     />
     <path
@@ -40,7 +40,7 @@ export const EyesIcon = ({ className, width = 229, height = 171, style }: EyesIc
     <path
       d="M122.92 79.466C122.92 79.466 133.366 30.382 188.238 39.395C188.238 39.395 175.779 87.11 122.92 79.466Z"
       stroke="black"
-      strokeWidth="9.627"
+      strokeWidth="13"
       strokeMiterlimit="10"
     />
     <path
