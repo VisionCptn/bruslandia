@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       amount: number
       orderNumber: string
       customerEmail: string
-      items?: { name: string; qty: number; sum: number; unit: string }[]
+      items?: { name: string; qty: number; sum: number; unit: string; code: string }[]
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!

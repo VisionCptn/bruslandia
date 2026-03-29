@@ -242,6 +242,7 @@ export const CheckoutForm = ({ t, paymentFailed = false }: CheckoutFormProps) =>
             qty: item.quantity,
             sum: Math.round(item.price * 100),
             unit: 'шт',
+            code: String(item.id),
           })),
         }),
       })
