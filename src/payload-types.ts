@@ -264,6 +264,10 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   inStock?: boolean | null;
+  /**
+   * Show size chart button on product page
+   */
+  showSizeChart?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -566,6 +570,7 @@ export interface ProductsSelect<T extends boolean = true> {
   sizes?: T;
   materials?: T;
   inStock?: T;
+  showSizeChart?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
