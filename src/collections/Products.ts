@@ -117,5 +117,14 @@ export const Products: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'showSizeChart',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Show size chart button on product page',
+      },
+    },
   ],
 }

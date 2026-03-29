@@ -119,6 +119,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               }
               price={product.pricing?.uah || 0}
               sizes={product.sizes}
+              showSizeChart={product.showSizeChart}
               t={t}
             />
 
