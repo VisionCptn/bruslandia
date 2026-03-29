@@ -13,6 +13,7 @@ interface ProductActionsProps {
   image: string
   price: number
   sizes?: string[]
+  showSizeChart?: boolean | null
   t: Pick<UIStrings, 'selectSize' | 'sizeLabel' | 'addToCart'>
 }
 
@@ -22,10 +23,11 @@ export const ProductActions = ({
   image,
   price,
   sizes,
+  showSizeChart,
   t,
 }: ProductActionsProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const [showSizeChart, setShowSizeChart] = useState(false)
+  const [sizeChartOpen, setSizeChartOpen] = useState(false)
   const { addItem } = useCart()
 
   const handleAddToCart = () => {
@@ -76,16 +78,18 @@ export const ProductActions = ({
               )
             })}
           </div>
-          <button
-            className="text-sm text-gray-600 mt-4 block lowercase underline cursor-pointer"
-            onClick={() => setShowSizeChart(true)}
-          >
-            таблиця розмірів
-          </button>
+          {showSizeChart && (
+            <button
+              className="text-sm text-gray-600 mt-4 block lowercase underline cursor-pointer"
+              onClick={() => setSizeChartOpen(true)}
+            >
+              таблиця розмірів
+            </button>
+          )}
         </div>
       )}
 
-      <Dialog open={showSizeChart} onOpenChange={setShowSizeChart}>
+      <Dialog open={sizeChartOpen} onOpenChange={setSizeChartOpen}>
         <DialogContent className="p-0 max-w-fit">
           <DialogTitle className="sr-only">таблиця розмірів</DialogTitle>
           <Image
