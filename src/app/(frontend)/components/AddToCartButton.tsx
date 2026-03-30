@@ -23,11 +23,13 @@ export const AddToCartButton = ({
   t,
 }: AddToCartButtonProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const { addItem } = useCart()
+  const { items, addItem, openCart } = useCart()
 
-  const handleAddToCart = () => {
-    if (!selectedSize && sizes.length > 0) {
-      alert(t.selectSize)
+  const inCart = items.some((item) => item.productId === productId)
+
+  const handleClick = () => {
+    if (inCart) {
+      openCart()
       return
     }
 
@@ -49,12 +51,7 @@ export const AddToCartButton = ({
             {sizes.map((size) => (
               <button
                 key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`px-4 py-2 border transition-colors ${
-                  selectedSize === size
-                    ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
-                    : 'bg-white text-black border-gray-300 hover:border-[#1a1a1a]'
-                }`}
+                className="px-4 py-2 border border-gray-300 hover:border-[#1a1a1a] transition-colors"
               >
                 {size}
               </button>
@@ -63,10 +60,19 @@ export const AddToCartButton = ({
         </div>
       )}
       <button
-        onClick={handleAddToCart}
-        className={`bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass()} transition-transform active:scale-95`}
+        onClick={handleClick}
+        className={`relative overflow-hidden bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass()} transition-transform active:scale-95`}
       >
-        {t.addToCart}
+        <span
+          className={`block transition-all duration-300 ${inCart ? '-translate-y-full opacity-0 absolute inset-0 flex items-center justify-center' : 'translate-y-0 opacity-100'}`}
+        >
+          {t.addToCart}
+        </span>
+        <span
+          className={`block transition-all duration-300 ${inCart ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 absolute inset-0 flex items-center justify-center'}`}
+        >
+          {'в корзині'}
+        </span>
       </button>
     </div>
   )

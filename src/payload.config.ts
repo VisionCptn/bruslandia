@@ -64,7 +64,7 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
+  db: sqliteD1Adapter({ binding: cloudflare.env.D1, push: false }),
   plugins: [
     r2Storage({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
