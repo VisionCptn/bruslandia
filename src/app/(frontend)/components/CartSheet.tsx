@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -18,14 +17,13 @@ interface CartSheetProps {
 }
 
 export const CartSheet = ({ t }: CartSheetProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { items } = useCart()
+  const { items, isCartOpen, openCart, closeCart } = useCart()
   const hasItems = items.length > 0
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isCartOpen} onOpenChange={(open) => (open ? openCart() : closeCart())}>
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={openCart}
         className="bg-transparent border-none cursor-pointer p-0"
       >
         {hasItems ? (
@@ -56,7 +54,7 @@ export const CartSheet = ({ t }: CartSheetProps) => {
         </SheetHeader>
 
         <div className="flex-1 px-6 py-4 overflow-hidden">
-          <CartContent onCheckout={() => setIsOpen(false)} t={t} />
+          <CartContent onCheckout={closeCart} t={t} />
         </div>
       </SheetContent>
     </Sheet>

@@ -28,9 +28,16 @@ export const ProductActions = ({
 }: ProductActionsProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [sizeChartOpen, setSizeChartOpen] = useState(false)
-  const { addItem } = useCart()
+  const { items, addItem, openCart } = useCart()
+
+  const inCart = items.some((item) => item.productId === productId)
 
   const handleAddToCart = () => {
+    if (inCart) {
+      openCart()
+      return
+    }
+
     if (sizes && sizes.length > 0 && !selectedSize) {
       alert(t.selectSize)
       return
@@ -107,7 +114,7 @@ export const ProductActions = ({
         onClick={handleAddToCart}
         className={`mt-4 bg-[#1a1a1a] text-white px-12 py-4 text-xl lowercase ${getRandomRotationClass()} transition-transform active:scale-95`}
       >
-        {t.addToCart}
+        {inCart ? 'в корзині' : t.addToCart}
       </button>
     </>
   )
